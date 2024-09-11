@@ -1,0 +1,38 @@
+[
+    {
+      "id": 1,
+      "title": "Grilled Chicken Salad",
+      "description": "A fresh and light salad with grilled chicken, mixed greens, cherry tomatoes, and a balsamic vinaigrette.",
+      "price": 120,
+      "image": "src/assets/chicken-salad.png"
+    },
+    {
+      "id": 2,
+      "title": "Quinoa and Black Bean Bowl",
+      "description": "A nutritious bowl of quinoa, black beans, corn, avocado, and a zesty lime dressing.",
+      "price": 70,
+      "image": "src/assets/quinoa.png"
+    },
+    {
+      "id": 3,
+      "title": "Avocado Toast",
+      "description": "Whole grain toast topped with smashed avocado, cherry tomatoes, and a sprinkle of sea salt.",
+      "price": 50,
+      "image": "src/assets/avocado.png"
+    },
+    {
+      "id": 4,
+      "title": "Vegetable Stir-Fry",
+      "description": "A colorful mix of stir-fried vegetables, including bell peppers, broccoli, and snap peas, served with brown rice.",
+      "price": 80,
+      "image": "src/assets/stir-fry.png"
+    },
+    {
+      "id": 5,
+      "title": "Greek Yogurt Parfait",
+      "description": "Creamy Greek yogurt layered with fresh berries, granola, and a drizzle of honey.",
+      "price": 45,
+      "image": "src/assets/parfait.png"
+    }
+  ]
+  
