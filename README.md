@@ -21,4 +21,4 @@ npx json-server db.json
 ```
 
 
-After following the steps above you can visit `[text](http://localhost:5173)` on your browser to view the website
+After following the steps above you can visit [text](http://localhost:5173) on your browser to view the website
