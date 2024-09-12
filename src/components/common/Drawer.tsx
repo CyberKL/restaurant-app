@@ -28,6 +28,11 @@ export default function Drawer({ open = false }: DrawerProps) {
       <div className="px-5">
         <ul className="space-y-5 text-2xl">
           <li>
+            <Link to={"/"} className="text-green-600 font-semibold">
+              Home
+            </Link>
+          </li>
+          <li>
             {location.pathname === "/" ? (
               <Scroll
                 to={"menu"}
@@ -74,12 +79,12 @@ export default function Drawer({ open = false }: DrawerProps) {
 
       {/* Account */}
       {!isAuthenticated && (
-        <div className="grid grid-cols-1 gap-5 px-5">
+        <div className="grid grid-cols-1 justify-center gap-5 px-5">
           <Link to={"/login"}>
             <Button
               variant={"outline"}
               size={"lg"}
-              className="text-green-600 text-lg font-semibold"
+              className="text-green-600 text-lg font-semibold max-w-full w-full"
             >
               Login
             </Button>
@@ -88,7 +93,7 @@ export default function Drawer({ open = false }: DrawerProps) {
             <Button
               variant={"default"}
               size={"lg"}
-              className="bg-green-600 text-lg font-semibold"
+              className="bg-green-600 text-lg font-semibold max-w-full w-full"
             >
               Register
             </Button>

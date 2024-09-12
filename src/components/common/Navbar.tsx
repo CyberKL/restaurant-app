@@ -86,19 +86,27 @@ export default function Navbar() {
       </div>
 
       {/* Logo section */}
-      <div className="col-span-4 place-content-center">
-        <Link to={"/"} className="flex items-center gap-2">
+      <div className="md:col-span-4">
+        <Link to={"/"} className="flex items-center justify-center md:justify-normal md:items-start md:flex-col lg:flex-row lg:items-center gap-2">
           <img src={logo} alt="logo" className="size-14" />
           <span className="text-green-600 text-2xl">GreenBite</span>
         </Link>
       </div>
 
       {/* Placeholder to make justify-between work */}
-      <div className="md:hidden block"></div>
+      {!isAuthenticated && (
+
+      <div className="md:hidden block w-[62px]"></div>
+      )}
 
       {/* Navigations section */}
       <div className="col-span-4 place-content-center hidden md:block">
         <ul className="flex items-center gap-5 justify-center">
+          <li>
+            <Link to={"/"} className="text-green-600 text-lg font-semibold">
+              Home
+            </Link>
+          </li>
           <li>
             {location.pathname === "/" ? (
               <Scroll
@@ -120,7 +128,7 @@ export default function Navbar() {
             )}
           </li>
           <li>
-            <Link to="/about" className="text-green-600 text-lg font-semibold">
+            <Link to="/about" className="text-green-600 text-lg font-semibold text-nowrap">
               About Us
             </Link>
           </li>
@@ -164,6 +172,9 @@ export default function Navbar() {
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate("/profile")}>
                 Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/cart")}>
+                Cart
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => dispatch(logout())}>
