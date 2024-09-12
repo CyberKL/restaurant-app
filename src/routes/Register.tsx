@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import registerationSchema from "@/validations/registrationSchema";
+import {
+  RegisterFormSchema,
+  registerationSchema,
+} from "@/validations/registrationSchema";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,20 +18,25 @@ import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import User from "@/types/user";
 import { createUser } from "@/api/api";
-
-interface formUser extends User {
-  confirmPassword: string;
-}
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function Register() {
+  const [error, setError] = useState<boolean>(false);
+
+  const { toast } = useToast();
+
   const navigate = useNavigate();
 
-  const form = useForm<formUser>({
+  const form = useForm<RegisterFormSchema>({
     resolver: yupResolver(registerationSchema),
     mode: "onChange",
   });
 
-  const onSubmit = async (data: formUser) => {
+  const onSubmit = async (data: RegisterFormSchema) => {
     const user: User = {
       fname: data.fname,
       lname: data.lname,
@@ -42,14 +50,22 @@ export default function Register() {
     // Should handle different responses when there is a real backend validating the form data
     if (response && response.ok) {
       navigate("/login");
+      toast({
+        title: "Registration successful!",
+        description:
+          "You have registered successfully!, please log in to continue.",
+      });
     } else {
-      // Should handle api error better
-      alert("An error occured when creating a user");
+      setError(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
   };
 
   return (
     <div className="relative grid grid-cols-12">
+      {/* Back button */}
       <div className="absolute top-0 left-0 p-5">
         <Link to={"/"}>
           <Button
@@ -77,7 +93,7 @@ export default function Register() {
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type="text" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -161,6 +177,15 @@ export default function Register() {
             </Button>
           </form>
         </Form>
+        <p className="text-sm">
+          Already have an account?{" "}
+          <Link
+            to={"/login"}
+            className="text-green-600 underline italic font-semibold"
+          >
+            Log In
+          </Link>
+        </p>
       </div>
 
       <div className="relative sm:flex items-center justify-center sm:col-span-6 col-span-full h-screen bg-[url(@/assets/register.jpg)] bg-cover rounded-l-3xl hidden px-10">
@@ -176,6 +201,18 @@ export default function Register() {
           </p>
         </div>
       </div>
+      {error && (
+        <div className="fixed bg-black opacity-80 size-full flex z-40 justify-center items-center px-5">
+          <Alert variant="destructive" className="z-50 sm:max-w-xl">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              An error occurred while registering :(
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
+      <Toaster />
     </div>
   );
 }

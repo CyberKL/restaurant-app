@@ -1,18 +1,19 @@
-import { CircleMinus, CirclePlus } from "lucide-react";
-import { Button } from "../ui/button";
 import { useState } from "react";
 import { FoodItem } from "@/types/foodItem";
+import { Button } from "@/components/ui/button";
+import { CircleMinus, CirclePlus } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "@/features/cart/cartSlice";
 import { RootState } from "@/app/store";
 import { useNavigate } from "react-router-dom";
 
-interface MenuItemProps extends FoodItem {
-  quantity: number,
+interface CartItemProps extends FoodItem {
+  quantity: number;
 }
 
-export default function MenuItem(props: MenuItemProps) {
+export default function CartItem(props: CartItemProps) {
   const [quantity, setQuantity] = useState<number>(props.quantity);
+  const [price, setPrice] = useState<number>(quantity * props.price);
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
@@ -24,6 +25,7 @@ export default function MenuItem(props: MenuItemProps) {
     if (isAuthenticated) {
       dispatch(addItem(props));
       setQuantity((prevState) => prevState + 1);
+      setPrice((prevState) => prevState + props.price);
     } else {
       navigate("/login");
     }
@@ -34,20 +36,26 @@ export default function MenuItem(props: MenuItemProps) {
       if (quantity > 0) {
         dispatch(removeItem(props.id));
         setQuantity((prevState) => prevState - 1);
+        setPrice((prevState) => prevState - props.price);
       }
     } else {
       navigate("/login");
     }
   };
 
+  if (quantity === 0) {
+    return null;
+  }
+
   return (
-    <div className="grid grid-cols-12 max-w-lg py-4">
-      <div className="col-span-9 space-y-3">
-        <div className="px-2 space-y-1">
-          <h1 className="text-2xl">{props.title}</h1>
-          <p className="text-sm text-gray-600">{props.description}</p>
-          <p>EGP {props.price}</p>
-        </div>
+    <div className="grid grid-cols-12 max-w-lg sm:gap-8 gap-2 py-4">
+      <img src={props.image} alt="image" className="col-span-2" />
+      <div className="sm:col-span-8 col-span-6">
+        <h1 className="sm:text-2xl text-lg">{props.title}</h1>
+        <p className="sm:text-sm text-xs text-gray-600">{props.description}</p>
+      </div>
+      <div className="sm:col-span-2 col-span-4">
+        <p className="text-center">EGP {price}</p>
         <div className="flex items-center gap-2">
           <Button variant={"ghost"} size={"icon"} onClick={decrement}>
             <CircleMinus color="#16a34a" />
@@ -57,9 +65,6 @@ export default function MenuItem(props: MenuItemProps) {
             <CirclePlus color="#16a34a" />
           </Button>
         </div>
-      </div>
-      <div className="place-content-center col-span-3">
-        <img src={props.image} alt="image" className="size-32" />
       </div>
     </div>
   );

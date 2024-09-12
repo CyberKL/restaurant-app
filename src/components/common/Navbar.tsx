@@ -1,12 +1,32 @@
-import logo from "@/assets/logo.png";
-import { Link } from "react-router-dom";
+import logo from "/logo.png";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import Drawer from "./Drawer";
-import { useState } from "react";
 import { Link as Scroll } from "react-scroll";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { LogOut } from "lucide-react";
+import { logout } from "@/features/auth/authSlice";
+import { interactWithDrawer } from "@/features/drawer/drawerSlice";
 
 export default function Navbar() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const isDrawerOpen = useSelector((state: RootState) => state.drawer);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const displayName = useSelector((state: RootState) => state.auth.displayName);
 
   return (
     <nav className="px-4 py-4 md:grid md:grid-cols-12 flex justify-between border-b border-gray-300 bg-white sticky top-0 z-50">
@@ -14,7 +34,7 @@ export default function Navbar() {
       <div className="md:hidden block place-content-center">
         <Button
           variant={"ghost"}
-          onClick={() => setIsDrawerOpen((prevState) => !prevState)}
+          onClick={() => dispatch(interactWithDrawer())}
           className="text-green-600"
         >
           {isDrawerOpen ? (
@@ -80,14 +100,24 @@ export default function Navbar() {
       <div className="col-span-4 place-content-center hidden md:block">
         <ul className="flex items-center gap-5 justify-center">
           <li>
-            <Scroll
-              to={"menu"}
-              smooth={true}
-              duration={200}
-              className="text-green-600 text-lg font-semibold cursor-pointer"
-            >
-              Menu
-            </Scroll>
+            {location.pathname === "/" ? (
+              <Scroll
+                to={"menu"}
+                smooth={true}
+                duration={200}
+                className="text-green-600 text-lg font-semibold cursor-pointer"
+              >
+                Menu
+              </Scroll>
+            ) : (
+              <Link
+                to={"/"}
+                className="text-green-600 text-lg font-semibold"
+                state={{ scrollToMenu: true }}
+              >
+                Menu
+              </Link>
+            )}
           </li>
           <li>
             <Link to="/about" className="text-green-600 text-lg font-semibold">
@@ -119,26 +149,52 @@ export default function Navbar() {
       </div>
 
       {/* Account section */}
-      <div className="md:flex md:flex-col lg:flex-row md:items-end gap-4 col-span-4 justify-end hidden items-center">
-        <Link to={"/login"}>
-          <Button
-            variant={"outline"}
-            size={"lg"}
-            className="text-green-600 text-lg font-semibold"
-          >
-            Login
-          </Button>
-        </Link>
-        <Link to={"/register"}>
-          <Button
-            variant={"default"}
-            size={"lg"}
-            className="bg-green-600 text-lg font-semibold"
-          >
-            Register
-          </Button>
-        </Link>
-      </div>
+      {isAuthenticated ? (
+        <div className="col-span-4 flex justify-end px-8">
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar>
+                <AvatarFallback className="bg-green-600 text-white">
+                  {displayName}
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => navigate("/profile")}>
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => dispatch(logout())}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      ) : (
+        <div className="md:flex md:flex-col lg:flex-row md:items-end gap-4 col-span-4 justify-end hidden items-center">
+          <Link to={"/login"}>
+            <Button
+              variant={"outline"}
+              size={"lg"}
+              className="text-green-600 text-lg font-semibold"
+            >
+              Login
+            </Button>
+          </Link>
+          <Link to={"/register"}>
+            <Button
+              variant={"default"}
+              size={"lg"}
+              className="bg-green-600 text-lg font-semibold"
+            >
+              Register
+            </Button>
+          </Link>
+        </div>
+      )}
     </nav>
   );
 }

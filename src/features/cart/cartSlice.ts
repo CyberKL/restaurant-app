@@ -1,23 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { FoodItem } from "@/types/foodItem";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface item {
-  id: number;
+interface item extends FoodItem {
   quantity: number;
 }
 
-const initialState: item[] = [];
+const initialState: item[] = !!localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart") as string) : [];
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
     // Adds new item entry or increments item quantity based on the item's existence
-    addItem: (state, action) => {
-      const id: number = action.payload;
+    addItem: (state, action: PayloadAction<FoodItem>) => {
+      const id: number = action.payload.id;
       const existingItem = state.find((item) => item.id === id);
       existingItem
         ? existingItem.quantity++
-        : state.push({ id: id, quantity: 1 });
+        : state.push({ ...action.payload, quantity: 1 });
+      localStorage.setItem("cart", JSON.stringify(state));
     },
 
     // Removes an item entry or decrements item quantity based on the item's quantity
@@ -27,11 +28,18 @@ const cartSlice = createSlice({
       if (existingItem)
       {
         if(existingItem.quantity > 1) existingItem.quantity--
-        else return (state.filter((item) => {item.id !== existingItem?.id}))
+        else state = (state.filter((item) => (item !== existingItem)))
+        localStorage.setItem("cart", JSON.stringify(state));
+        return state
       }
     },
+
+    clearCart: () => {
+      localStorage.removeItem("cart");
+      return [];
+    }
   },
 });
 
-export const { addItem, removeItem } = cartSlice.actions;
+export const { addItem, removeItem, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
