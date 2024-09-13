@@ -1,11 +1,8 @@
-import { FoodItem } from "@/types/foodItem";
+import CartFoodItem from "@/types/cartFoodItem";
+import FoodItem from "@/types/foodItem";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface item extends FoodItem {
-  quantity: number;
-}
-
-const initialState: item[] = !!localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart") as string) : [];
+const initialState: CartFoodItem[] = !!localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart") as string) : [];
 
 const cartSlice = createSlice({
   name: "cart",
@@ -22,7 +19,7 @@ const cartSlice = createSlice({
     },
 
     // Removes an item entry or decrements item quantity based on the item's quantity
-    removeItem: (state, action): void | item[] => {
+    removeItem: (state, action): void | CartFoodItem[] => {
       const id: number = action.payload;
       const existingItem = state.find((item) => item.id === id);
       if (existingItem)

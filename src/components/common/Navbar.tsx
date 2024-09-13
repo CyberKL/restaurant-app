@@ -87,17 +87,17 @@ export default function Navbar() {
 
       {/* Logo section */}
       <div className="md:col-span-4">
-        <Link to={"/"} className="flex items-center justify-center md:justify-normal md:items-start md:flex-col lg:flex-row lg:items-center gap-2">
+        <Link
+          to={"/"}
+          className="flex items-center justify-center md:justify-normal md:items-start md:flex-col lg:flex-row lg:items-center gap-2"
+        >
           <img src={logo} alt="logo" className="size-14" />
           <span className="text-green-600 text-2xl">GreenBite</span>
         </Link>
       </div>
 
       {/* Placeholder to make justify-between work */}
-      {!isAuthenticated && (
-
-      <div className="md:hidden block w-[62px]"></div>
-      )}
+      {!isAuthenticated && <div className="md:hidden block w-[62px]"></div>}
 
       {/* Navigations section */}
       <div className="col-span-4 place-content-center hidden md:block">
@@ -128,7 +128,10 @@ export default function Navbar() {
             )}
           </li>
           <li>
-            <Link to="/about" className="text-green-600 text-lg font-semibold text-nowrap">
+            <Link
+              to="/about"
+              className="text-green-600 text-lg font-semibold text-nowrap"
+            >
               About Us
             </Link>
           </li>
@@ -175,6 +178,9 @@ export default function Navbar() {
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate("/cart")}>
                 Cart
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/order-history")}>
+                Order history
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => dispatch(logout())}>

@@ -1,15 +1,13 @@
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { FoodItem } from "@/types/foodItem";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "@/features/cart/cartSlice";
 import { RootState } from "@/app/store";
 import { useNavigate } from "react-router-dom";
+import CartFoodItem from "@/types/cartFoodItem";
 
-interface MenuItemProps extends FoodItem {
-  quantity: number,
-}
+interface MenuItemProps extends CartFoodItem {}
 
 export default function MenuItem(props: MenuItemProps) {
   const [quantity, setQuantity] = useState<number>(props.quantity);
