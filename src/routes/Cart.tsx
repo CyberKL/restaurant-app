@@ -12,7 +12,7 @@ export default function Cart() {
     <div>
       <Navbar />
       {cartItems.length > 0 ? (
-        <div className="grid place-items-center gap-5 divide-y-2 w-full pt-20 pb-32">
+        <div className="grid place-items-center gap-5 divide-y-2 w-full pt-20 pb-32 px-5">
           {cartItems.map((item, index) => (
             <CartItem {...item} key={index} />
           ))}

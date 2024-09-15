@@ -11,6 +11,7 @@ interface MenuItemProps extends CartFoodItem {}
 
 export default function MenuItem(props: MenuItemProps) {
   const [quantity, setQuantity] = useState<number>(props.quantity);
+  const [action, setAction] = useState<string>("");
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
@@ -22,6 +23,7 @@ export default function MenuItem(props: MenuItemProps) {
     if (isAuthenticated) {
       dispatch(addItem(props));
       setQuantity((prevState) => prevState + 1);
+      setAction("increment");
     } else {
       navigate("/login");
     }
@@ -32,6 +34,7 @@ export default function MenuItem(props: MenuItemProps) {
       if (quantity > 0) {
         dispatch(removeItem(props.id));
         setQuantity((prevState) => prevState - 1);
+        setAction("decrement");
       }
     } else {
       navigate("/login");
@@ -47,11 +50,32 @@ export default function MenuItem(props: MenuItemProps) {
           <p>EGP {props.price}</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant={"ghost"} size={"icon"} onClick={decrement}>
+          <Button
+            variant={"ghost"}
+            size={"icon"}
+            onClick={decrement}
+            className="active:scale-105"
+          >
             <CircleMinus color="#16a34a" />
           </Button>
-          <span>{quantity}</span>
-          <Button variant={"ghost"} size={"icon"} onClick={increment}>
+          <span
+            className={`animate-in ${
+              action === "increment"
+                ? "slide-in-from-bottom-4"
+                : action === "decrement"
+                ? "slide-in-from-top-4"
+                : ""
+            }`}
+            key={props.quantity}
+          >
+            {quantity}
+          </span>
+          <Button
+            variant={"ghost"}
+            size={"icon"}
+            onClick={increment}
+            className="active:scale-105"
+          >
             <CirclePlus color="#16a34a" />
           </Button>
         </div>

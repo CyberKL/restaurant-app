@@ -19,7 +19,7 @@ const cartSlice = createSlice({
     },
 
     // Removes an item entry or decrements item quantity based on the item's quantity
-    removeItem: (state, action): void | CartFoodItem[] => {
+    removeItem: (state, action: PayloadAction<number>): void | CartFoodItem[] => {
       const id: number = action.payload;
       const existingItem = state.find((item) => item.id === id);
       if (existingItem)
@@ -34,9 +34,15 @@ const cartSlice = createSlice({
     clearCart: () => {
       localStorage.removeItem("cart");
       return [];
+    },
+
+    clearItem: (state, action: PayloadAction<number>): CartFoodItem[] => {
+      state = state.filter((item) => item.id !== action.payload);
+      localStorage.setItem("cart", JSON.stringify(state));
+      return state;
     }
   },
 });
 
-export const { addItem, removeItem, clearCart } = cartSlice.actions;
+export const { addItem, removeItem, clearCart, clearItem } = cartSlice.actions;
 export default cartSlice.reducer;

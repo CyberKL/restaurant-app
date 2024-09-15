@@ -2,7 +2,7 @@ import MenuItem from "../common/MenuItem";
 import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
-import { FoodItem } from "@/types/foodItem";
+import FoodItem from "@/types/foodItem";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import MenuItemSkeleton from "../common/MenuItemSkeleton";
