@@ -6,6 +6,7 @@ import { addItem, removeItem } from "@/features/cart/cartSlice";
 import { RootState } from "@/app/store";
 import { useNavigate } from "react-router-dom";
 import CartFoodItem from "@/types/cartFoodItem";
+import { Rating } from "react-simple-star-rating";
 
 interface MenuItemProps extends CartFoodItem {}
 
@@ -47,6 +48,7 @@ export default function MenuItem(props: MenuItemProps) {
         <div className="px-2 space-y-1">
           <h1 className="text-2xl">{props.title}</h1>
           <p className="text-sm text-gray-600">{props.description}</p>
+          <Rating readonly initialValue={props.rating} SVGclassName="inline-block" size={20} fillColor="#16a34a" />
           <p>EGP {props.price}</p>
         </div>
         <div className="flex items-center gap-2">

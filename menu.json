@@ -1,38 +1,321 @@
 [
-    {
-      "id": 1,
-      "title": "Grilled Chicken Salad",
-      "description": "A fresh and light salad with grilled chicken, mixed greens, cherry tomatoes, and a balsamic vinaigrette.",
-      "price": 120,
-      "image": "src/assets/chicken-salad.png"
-    },
-    {
-      "id": 2,
-      "title": "Quinoa and Black Bean Bowl",
-      "description": "A nutritious bowl of quinoa, black beans, corn, avocado, and a zesty lime dressing.",
-      "price": 70,
-      "image": "src/assets/quinoa.png"
-    },
-    {
-      "id": 3,
-      "title": "Avocado Toast",
-      "description": "Whole grain toast topped with smashed avocado, cherry tomatoes, and a sprinkle of sea salt.",
-      "price": 50,
-      "image": "src/assets/avocado.png"
-    },
-    {
-      "id": 4,
-      "title": "Vegetable Stir-Fry",
-      "description": "A colorful mix of stir-fried vegetables, including bell peppers, broccoli, and snap peas, served with brown rice.",
-      "price": 80,
-      "image": "src/assets/stir-fry.png"
-    },
-    {
-      "id": 5,
-      "title": "Greek Yogurt Parfait",
-      "description": "Creamy Greek yogurt layered with fresh berries, granola, and a drizzle of honey.",
-      "price": 45,
-      "image": "src/assets/parfait.png"
-    }
-  ]
-  
+  {
+    "id": 1,
+    "title": "Sweet Potato Fries",
+    "description": "Baked sweet potato fries seasoned with sea salt.",
+    "price": 70,
+    "image": "src/assets/sweet-potato-fries.png",
+    "category": "Appetizers",
+    "subcategory": "",
+    "cuisine": "American",
+    "rating": 3
+  },
+  {
+    "id": 2,
+    "title": "Hummus & Veggie Platter",
+    "description": "A variety of fresh vegetables served with homemade hummus.",
+    "price": 80,
+    "image": "src/assets/hummus.png",
+    "category": "Appetizers",
+    "subcategory": "",
+    "cuisine": "Mediterranean",
+    "rating": 4
+  },
+  {
+    "id": 3,
+    "title": "Stuffed Mushrooms",
+    "description": "Mushrooms stuffed with spinach and cheese.",
+    "price": 90,
+    "image": "src/assets/stuffed-mushroom.png",
+    "category": "Appetizers",
+    "subcategory": "Value",
+    "cuisine": "Italian",
+    "rating": 4
+  },
+  {
+    "id": 4,
+    "title": "Avocado Bruschetta",
+    "description": "Grilled bread topped with avocado, cherry tomatoes, and basil.",
+    "price": 75,
+    "image": "src/assets/avocado.png",
+    "category": "Appetizers",
+    "subcategory": "",
+    "cuisine": "Italian",
+    "rating": 5
+  },
+  {
+    "id": 5,
+    "title": "Baked Zucchini Sticks",
+    "description": "Crispy baked zucchini sticks served with marinara sauce.",
+    "price": 85,
+    "image": "src/assets/baked-zucchini-sticks.png",
+    "category": "Appetizers",
+    "subcategory": "",
+    "cuisine": "Italian",
+    "rating": 3
+  },
+  {
+    "id": 6,
+    "title": "Falafel Balls",
+    "description": "Crispy falafel served with tahini sauce.",
+    "price": 75,
+    "image": "src/assets/falafel-balls.png",
+    "category": "Appetizers",
+    "subcategory": "",
+    "cuisine": "Middle Eastern",
+    "rating": 4
+  },
+  {
+    "id": 7,
+    "title": "Grilled Chicken Caesar Salad",
+    "description": "Crisp romaine lettuce with grilled chicken, parmesan cheese, and a light Caesar dressing.",
+    "price": 150,
+    "image": "src/assets/chicken-salad.png",
+    "category": "Salads",
+    "subcategory": "Top",
+    "cuisine": "American",
+    "rating": 5
+  },
+  {
+    "id": 8,
+    "title": "Quinoa & Avocado Salad",
+    "description": "Quinoa, avocado, black beans, and cherry tomatoes with lime vinaigrette.",
+    "price": 120,
+    "image": "src/assets/quinoa.png",
+    "category": "Salads",
+    "subcategory": "Value",
+    "cuisine": "Mexican",
+    "rating": 4
+  },
+  {
+    "id": 9,
+    "title": "Kale & Apple Salad",
+    "description": "Fresh kale with crisp apples, walnuts, and a maple vinaigrette dressing.",
+    "price": 110,
+    "image": "src/assets/kale-apple-salad.png",
+    "category": "Salads",
+    "subcategory": "",
+    "cuisine": "American",
+    "rating": 3
+  },
+  {
+    "id": 10,
+    "title": "Greek Salad",
+    "description": "Cucumber, tomatoes, feta cheese, olives, and oregano with olive oil.",
+    "price": 100,
+    "image": "src/assets/greek-salad.png",
+    "category": "Salads",
+    "subcategory": "Value",
+    "cuisine": "Greek",
+    "rating": 4
+  },
+  {
+    "id": 11,
+    "title": "Spinach & Berry Salad",
+    "description": "Fresh spinach with mixed berries, almonds, and a poppy seed dressing.",
+    "price": 130,
+    "image": "src/assets/spinach-berry-salad.png",
+    "category": "Salads",
+    "subcategory": "",
+    "cuisine": "American",
+    "rating": 4
+  },
+  {
+    "id": 12,
+    "title": "Chickpea & Avocado Salad",
+    "description": "Chickpeas, avocado, and red onion with lemon-tahini dressing.",
+    "price": 115,
+    "image": "src/assets/chickpea-avocado-salad.png",
+    "category": "Salads",
+    "subcategory": "",
+    "cuisine": "Mediterranean",
+    "rating": 3
+  },
+  {
+    "id": 13,
+    "title": "Citrus & Arugula Salad",
+    "description": "Arugula topped with fresh citrus segments and toasted pine nuts.",
+    "price": 105,
+    "image": "src/assets/citrus-arugula-salad.png",
+    "category": "Salads",
+    "subcategory": "",
+    "cuisine": "Mediterranean",
+    "rating": 4
+  },
+  {
+    "id": 14,
+    "title": "Warm Quinoa & Kale Salad",
+    "description": "Warm quinoa with roasted butternut squash, kale, and cranberries.",
+    "price": 140,
+    "image": "src/assets/warm-quinoa-kale-salad.png",
+    "category": "Salads",
+    "subcategory": "Value",
+    "cuisine": "American",
+    "rating": 4
+  },
+  {
+    "id": 15,
+    "title": "Grilled Salmon with Veggies",
+    "description": "Grilled salmon fillet with steamed vegetables.",
+    "price": 200,
+    "image": "src/assets/grilled-salmon-veggies.png",
+    "category": "Main",
+    "subcategory": "Top",
+    "cuisine": "American",
+    "rating": 5
+  },
+  {
+    "id": 16,
+    "title": "Grilled Tofu Stir-Fry",
+    "description": "Stir-fried vegetables with grilled tofu and a savory ginger-soy sauce.",
+    "price": 150,
+    "image": "src/assets/grilled-tofu-stir-fry.png",
+    "category": "Main",
+    "subcategory": "Top",
+    "cuisine": "Asian",
+    "rating": 5
+  },
+  {
+    "id": 17,
+    "title": "Chicken Stir Fry",
+    "description": "Stir-fried chicken with mixed vegetables in soy sauce.",
+    "price": 160,
+    "image": "src/assets/stir-fry.png",
+    "category": "Main",
+    "subcategory": "Top",
+    "cuisine": "Asian",
+    "rating": 5
+  },
+  {
+    "id": 18,
+    "title": "Zucchini Noodles with Pesto",
+    "description": "Zucchini noodles tossed in fresh basil pesto.",
+    "price": 150,
+    "image": "src/assets/zucchini-noodles-pesto.png",
+    "category": "Main",
+    "subcategory": "Value",
+    "cuisine": "Italian",
+    "rating": 4
+  },
+  {
+    "id": 19,
+    "title": "Lentil Stew",
+    "description": "Hearty lentil stew with vegetables.",
+    "price": 140,
+    "image": "src/assets/lentil-stew.png",
+    "category": "Main",
+    "subcategory": "",
+    "cuisine": "Middle Eastern",
+    "rating": 4
+  },
+  {
+    "id": 20,
+    "title": "Turkey Lettuce Sandwich",
+    "description": "Ground turkey with lettuce wraps and a light sauce sandwich.",
+    "price": 130,
+    "image": "src/assets/turkey-lettuce-sandwich.png",
+    "category": "Main",
+    "subcategory": "",
+    "cuisine": "American",
+    "rating": 4
+  },
+  {
+    "id": 21,
+    "title": "Grilled Tofu Skewers",
+    "description": "Tofu skewers marinated in herbs, served with grilled veggies.",
+    "price": 145,
+    "image": "src/assets/tofu-skewers.png",
+    "category": "Main",
+    "subcategory": "",
+    "cuisine": "Mediterranean",
+    "rating": 3
+  },
+  {
+    "id": 22,
+    "title": "Eggplant Parmesan",
+    "description": "Baked eggplant layered with marinara sauce and melted cheese.",
+    "price": 170,
+    "image": "src/assets/eggplant-parmesan.png",
+    "category": "Main",
+    "subcategory": "Top",
+    "cuisine": "Italian",
+    "rating": 5
+  },
+  {
+    "id": 23,
+    "title": "Beef & Broccoli Stir-Fry",
+    "description": "Tender beef and broccoli stir-fried in soy-ginger sauce.",
+    "price": 180,
+    "image": "src/assets/beef-broccoli-stir-fry.png",
+    "category": "Main",
+    "subcategory": "Value",
+    "cuisine": "Asian",
+    "rating": 4
+  },
+  {
+    "id": 24,
+    "title": "Burrito Bowl",
+    "description": "A burrito bowl filled with rice, beans, and veggies, and chicken.",
+    "price": 155,
+    "image": "src/assets/burrito-bowl.png",
+    "category": "Main",
+    "subcategory": "",
+    "cuisine": "Mexican",
+    "rating": 3
+  },
+  {
+    "id": 25,
+    "title": "Lamb Shawarma Plate",
+    "description": "Tender lamb shawarma with rice and salad.",
+    "price": 200,
+    "image": "src/assets/lamb-shawarma.png",
+    "category": "Main",
+    "subcategory": "Top",
+    "cuisine": "Middle Eastern",
+    "rating": 5
+  },
+  {
+    "id": 26,
+    "title": "Chia Pudding",
+    "description": "Chia seeds soaked in almond milk with mixed berries.",
+    "price": 80,
+    "image": "src/assets/chia-pudding.png",
+    "category": "Desserts",
+    "subcategory": "",
+    "cuisine": "Vegan",
+    "rating": 4.4
+  },
+  {
+    "id": 27,
+    "title": "Fruit Salad with Honey",
+    "description": "A mix of seasonal fruits drizzled with honey.",
+    "price": 70,
+    "image": "src/assets/fruit-salad-honey.png",
+    "category": "Desserts",
+    "subcategory": "",
+    "cuisine": "Mediterranean",
+    "rating": 4.3
+  },
+  {
+    "id": 28,
+    "title": "Banana Oat Cookies",
+    "description": "Healthy cookies made with oats, banana, and dark chocolate chips.",
+    "price": 60,
+    "image": "src/assets/banana-oat-cookies.png",
+    "category": "Desserts",
+    "subcategory": "",
+    "cuisine": "Vegan",
+    "rating": 4.6
+  },
+  {
+    "id": 29,
+    "title": "Avocado Brownies",
+    "description": "Rich brownies made with avocado and dark chocolate.",
+    "price": 100,
+    "image": "src/assets/avocado-brownies.png",
+    "category": "Desserts",
+    "subcategory": "Top",
+    "cuisine": "American",
+    "rating": 4.9
+  }    
+]

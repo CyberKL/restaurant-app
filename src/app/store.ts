@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "@/features/cart/cartSlice"
 import authReducer from "@/features/auth/authSlice"
 import drawerReducer from "@/features/drawer/drawerSlice"
+import foodMenuReducer from "@/features/foodMenu/foodMenuSlice";
 
 export const store = configureStore({
   reducer: {
     cart: cartReducer,
     auth: authReducer,
     drawer: drawerReducer,
+    foodMenu: foodMenuReducer,
   },
   devTools: true
 });

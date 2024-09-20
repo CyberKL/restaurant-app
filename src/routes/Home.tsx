@@ -19,7 +19,7 @@ export default function Home() {
   }, [location]);
 
   return (
-    <div>
+    <>
       <Navbar />
       <Hero />
       <Element name="menu" id="menu">
@@ -27,6 +27,6 @@ export default function Home() {
       </Element>
       <Footer />
       <Toaster />
-    </div>
+    </>
   );
 }
