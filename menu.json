@@ -154,6 +154,17 @@
     "rating": 4
   },
   {
+    "id": 31,
+    "title": "Vegan Salad & Smoothie Deal",
+    "description": "A fresh garden salad with mixed greens, cherry tomatoes, quinoa, and a lemon-tahini dressing, served with a tropical mango smoothie. Perfect for a light and healthy meal.",
+    "price": 90,
+    "image": "src/assets/vegan-salad-smoothie-deal.png",
+    "category": "Salads",
+    "subcategory": "Offers",
+    "cuisine": "Vegan",
+    "rating": 4
+  },
+  {
     "id": 15,
     "title": "Grilled Salmon with Veggies",
     "description": "Grilled salmon fillet with steamed vegetables.",
@@ -272,6 +283,28 @@
     "category": "Main",
     "subcategory": "Top",
     "cuisine": "Middle Eastern",
+    "rating": 5
+  },
+  {
+    "id": 30,
+    "title": "Chicken Wrap Combo",
+    "description": "A whole wheat chicken wrap filled with grilled chicken, avocado, lettuce, and a light yogurt sauce. Comes with a side of sweet potato fries and a refreshing drink.",
+    "price": 110,
+    "image": "src/assets/chicken-wrap-combo.png",
+    "category": "Main",
+    "subcategory": "Offers",
+    "cuisine": "Mediterranean",
+    "rating": 5
+  },
+  {
+    "id": 32,
+    "title": "Grilled Salmon Power Plate",
+    "description": "A protein-packed meal including grilled salmon, roasted veggies, and brown rice, paired with a detox green juice for a balanced and nutritious offering.",
+    "price": 130,
+    "image": "src/assets/grilled-salmon-power-plate.png",
+    "category": "Main",
+    "subcategory": "Offers",
+    "cuisine": "Nordic",
     "rating": 5
   },
   {

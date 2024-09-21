@@ -111,7 +111,7 @@ export default function FoodMenu() {
   useEffect(() => {
     if (activeCategory === "all") {
       dispatch(setFilteredMenuItems(menuItems));
-    } else if (activeCategory === "top" || activeCategory === "value") {
+    } else if (activeCategory === "top" || activeCategory === "value" || activeCategory === "offers") {
       dispatch(
         setFilteredMenuItems(
           menuItems.filter(
@@ -355,6 +355,15 @@ function CategorySection() {
         onClick={handleCategoryClick}
       >
         Top dishes
+      </button>
+      <button
+        id="offers"
+        className={`${
+          activeCategory === "offers" ? "border-b-4" : "text-gray-400"
+        } border-green-600 flex-1 p-1 min-w-24`}
+        onClick={handleCategoryClick}
+      >
+        Offers
       </button>
       <button
         id="value"
