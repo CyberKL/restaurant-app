@@ -135,9 +135,21 @@ export default function FoodMenu() {
   // Searching
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e.currentTarget.value.toLowerCase();
+    let items: FoodItem[];
+    if (filteredMenuItems.length === 0 && !options)
+    {
+      items = menuItems;
+    }
+    else if (filteredMenuItems.length > 0)
+    {
+      items = filteredMenuItems;
+    }
+    else {
+      items = []
+    }
     dispatch(
       setFilteredMenuItems(
-        menuItems.filter(
+        items.filter(
           (item) =>
             item.title.toLowerCase().includes(search) ||
             item.description.toLowerCase().includes(search)
@@ -155,17 +167,20 @@ export default function FoodMenu() {
         selectedCuisines.includes(item.cuisine)
       );
     }
+    console.log(filteredItems)
     if (price.min && price.max) {
       const priceRange = price;
       filteredItems = filteredItems.filter(
-        (item) => item.price >= priceRange.min && item.price < priceRange.max
+        (item) => item.price >= priceRange.min && item.price <= priceRange.max
       );
     }
+    console.log(filteredItems)
     if (rating) {
       filteredItems = filteredItems.filter(
         (item) => Math.floor(item.rating) === rating
       );
     }
+    console.log(filteredItems)
     if (sort) {
       const sortByKey = (property: keyof FoodItem, descending = false) => {
         filteredItems = [...filteredItems].sort((a, b) => {
@@ -200,7 +215,6 @@ export default function FoodMenu() {
   };
 
   useEffect(() => {
-    console.log("options changed");
     if (options.isOptions) filterSort();
     else dispatch(setFilteredMenuItems(menuItems));
   }, [options]);
@@ -232,14 +246,14 @@ export default function FoodMenu() {
                 size={"icon"}
                 onClick={() => {
                   setIsSearching(false);
-                  dispatch(setFilteredMenuItems(menuItems));
+                  filterSort();
                 }}
               >
                 <X />
               </Button>
             </div>
           ) : (
-            <div className="grid place-items-center grid-cols-12 max-w-lg gap-2">
+            <div className="grid place-items-center justify-end grid-cols-12 max-w-lg gap-2">
               <ScrollArea className="w-full max-w-lg col-span-9 whitespace-nowrap">
                 {options.isOptions ? <OptionsSection /> : <CategorySection />}
                 <ScrollBar orientation="horizontal" />
@@ -257,7 +271,7 @@ export default function FoodMenu() {
             </div>
           )}
           <div className="grid place-items-center gap-5 divide-y-2 w-full sm:px-0 px-6">
-            {filteredMenuItems.length === 0
+            {filteredMenuItems.length === 0 && !options.isOptions
               ? menuItems
                   .slice(startIndex, endIndex)
                   .map((item, index) => (
@@ -280,10 +294,13 @@ export default function FoodMenu() {
                       key={index}
                     />
                   ))}
+                  {filteredMenuItems.length === 0 && options.isOptions && (
+                    <p>There is no menu items matching your criteria</p>
+                  )}
           </div>
           <PaginatioinSection
             totalItems={
-              filteredMenuItems.length === 0
+              filteredMenuItems.length === 0 && !options
                 ? menuItems.length
                 : filteredMenuItems.length
             }
@@ -442,8 +459,10 @@ function FilterSortSection() {
 
   return (
     <Sheet>
-      <SheetTrigger>
-        <ListFilter />
+      <SheetTrigger asChild>
+        <Button variant={"ghost"} size={"icon"}>
+          <ListFilter />
+        </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
@@ -606,7 +625,7 @@ function OptionsSection() {
     priceH: "Price, High to Low",
     priceL: "Price, Low to High",
     ratingH: "Rating, High to Low",
-    ratingL: "Price, Low to High",
+    ratingL: "Rating, Low to High",
   };
 
   const dispatch = useDispatch();

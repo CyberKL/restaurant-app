@@ -18,7 +18,11 @@ interface PaginationSectionProps {
   pageRange: number;
 }
 
-function getPagination(currentPage: number, totalPages: number, pageRange: number) {
+function getPagination(
+  currentPage: number,
+  totalPages: number,
+  pageRange: number
+) {
   let pages = [];
 
   let startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
@@ -26,67 +30,80 @@ function getPagination(currentPage: number, totalPages: number, pageRange: numbe
 
   // Ensure the range is always exactly `pageRange` long if possible
   if (endPage - startPage + 1 < pageRange) {
-      if (startPage === 1) {
-          endPage = Math.min(totalPages, startPage + pageRange - 1);
-      } else if (endPage === totalPages) {
-          startPage = Math.max(1, endPage - pageRange + 1);
-      }
+    if (startPage === 1) {
+      endPage = Math.min(totalPages, startPage + pageRange - 1);
+    } else if (endPage === totalPages) {
+      startPage = Math.max(1, endPage - pageRange + 1);
+    }
   }
 
   // Add pages to the array
   for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
+    pages.push(i);
   }
 
   return pages;
 }
 
 export default function PaginatioinSection(props: PaginationSectionProps) {
-  const totalPages = Math.ceil(props.totalItems / props.itemsPerPage)
-  const [pages, setPages] = useState<number[]>([])
+  const totalPages = Math.ceil(props.totalItems / props.itemsPerPage);
+  const [pages, setPages] = useState<number[]>([]);
 
-  const currentPage = useSelector((state: RootState) => state.foodMenu.currentPage)
-  const activeCategory = useSelector((state: RootState) => state.foodMenu.activeCategory)
-  const options = useSelector((state: RootState) => state.foodMenu.options)
-  const filteredMenuItems = useSelector((state: RootState) => state.foodMenu.filteredMenuItems)
+  const currentPage = useSelector(
+    (state: RootState) => state.foodMenu.currentPage
+  );
+  const activeCategory = useSelector(
+    (state: RootState) => state.foodMenu.activeCategory
+  );
+  const options = useSelector((state: RootState) => state.foodMenu.options);
+  const filteredMenuItems = useSelector(
+    (state: RootState) => state.foodMenu.filteredMenuItems
+  );
   const dispatch = useDispatch();
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      dispatch(setCurrentPage(currentPage + 1))
+      dispatch(setCurrentPage(currentPage + 1));
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      dispatch(setCurrentPage(currentPage - 1))
+      dispatch(setCurrentPage(currentPage - 1));
     }
   };
 
   useEffect(() => {
-    if (totalPages <= props.pageRange)
-    {
-      let pagesRange = []
-      for (let i = 1; i <= totalPages; i++) pagesRange.push(i);
-      setPages(pagesRange) 
+    if (totalPages === 0) {
+      setPages([]);
+    } else {
+      if (totalPages <= props.pageRange) {
+        let pagesRange = [];
+        for (let i = 1; i <= totalPages; i++) pagesRange.push(i);
+        setPages(pagesRange);
+      } else {
+        const pagesRange = getPagination(
+          currentPage,
+          totalPages - 1,
+          props.pageRange
+        );
+        setPages(pagesRange);
+      }
     }
-    else
-    {
-      const pagesRange = getPagination(currentPage, totalPages - 1, props.pageRange);
-      setPages(pagesRange);
-    }
-  }, [currentPage, filteredMenuItems])
+  }, [currentPage, filteredMenuItems]);
 
   useEffect(() => {
     dispatch(setCurrentPage(1));
-  }, [activeCategory, options])
+  }, [activeCategory, options]);
 
   return (
     <Pagination>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            className="cursor-pointer"
+            className={`cursor-pointer ${
+              totalPages === 0 ? "hidden" : ""
+            }`}
             onClick={handlePrevPage}
           />
         </PaginationItem>
@@ -119,7 +136,9 @@ export default function PaginatioinSection(props: PaginationSectionProps) {
 
         <PaginationItem>
           <PaginationNext
-            className={"cursor-pointer"}
+            className={`cursor-pointer ${
+              totalPages === 0 ? "hidden" : ""
+            }`}
             onClick={handleNextPage}
           />
         </PaginationItem>
