@@ -1,12 +1,13 @@
-import { CircleMinus, CirclePlus } from "lucide-react";
+import { CircleMinus, CirclePlus, Star } from "lucide-react";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "@/features/cart/cartSlice";
 import { RootState } from "@/app/store";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CartFoodItem from "@/types/cartFoodItem";
 import { Rating } from "react-simple-star-rating";
+import { handleFavorites } from "@/features/favorites/favoritesSlice";
 
 interface MenuItemProps extends CartFoodItem {}
 
@@ -16,7 +17,10 @@ export default function MenuItem(props: MenuItemProps) {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
-
+  
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const favorites = useSelector((state: RootState) => state.favorites);
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -42,13 +46,24 @@ export default function MenuItem(props: MenuItemProps) {
     }
   };
 
+  // Check if the item is currently favorited
+  useEffect(() => {
+    setIsFavorite(!!favorites.find((i) => i.id === props.id));
+  }, [favorites]);
+
   return (
     <div className="grid grid-cols-12 max-w-lg py-4">
       <div className="col-span-9 space-y-3">
         <div className="px-2 space-y-1">
           <h1 className="text-2xl">{props.title}</h1>
           <p className="text-sm text-gray-600">{props.description}</p>
-          <Rating readonly initialValue={props.rating} SVGclassName="inline-block" size={20} fillColor="#16a34a" />
+          <Rating
+            readonly
+            initialValue={props.rating}
+            SVGclassName="inline-block"
+            size={20}
+            fillColor="#16a34a"
+          />
           <p>EGP {props.price}</p>
         </div>
         <div className="flex items-center gap-2">
@@ -79,6 +94,20 @@ export default function MenuItem(props: MenuItemProps) {
             className="active:scale-105"
           >
             <CirclePlus color="#16a34a" />
+          </Button>
+          <Link to={`/item/${props.id}`}>
+            <Button size={"sm"}>View item</Button>
+          </Link>
+          <Button
+            variant={"ghost"}
+            size={"icon"}
+            onClick={() =>
+              isAuthenticated
+                ? dispatch(handleFavorites(props))
+                : navigate("/login")
+            }
+          >
+            <Star stroke="#16a34a" fill={isFavorite ? "#16a34a" : "white"} />
           </Button>
         </div>
       </div>

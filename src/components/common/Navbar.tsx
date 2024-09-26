@@ -182,6 +182,9 @@ export default function Navbar() {
               <DropdownMenuItem onClick={() => navigate("/order-history")}>
                 Order history
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/favorites")}>
+                Favorites
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => dispatch(logout())}>
                 <LogOut className="mr-2 h-4 w-4" />

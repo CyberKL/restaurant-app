@@ -3,6 +3,12 @@ import cartReducer from "@/features/cart/cartSlice"
 import authReducer from "@/features/auth/authSlice"
 import drawerReducer from "@/features/drawer/drawerSlice"
 import foodMenuReducer from "@/features/foodMenu/foodMenuSlice";
+import reviewsReducer from "@/features/reviews/reviewsSlice";
+import favoritesReducer from "@/features/favorites/favoritesSlice";
+import { enableMapSet } from 'immer';
+
+// Enable support for Map and Set in Immer
+enableMapSet();
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +16,8 @@ export const store = configureStore({
     auth: authReducer,
     drawer: drawerReducer,
     foodMenu: foodMenuReducer,
+    reviews: reviewsReducer,
+    favorites: favoritesReducer,
   },
   devTools: true
 });

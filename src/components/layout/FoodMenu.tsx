@@ -300,7 +300,7 @@ export default function FoodMenu() {
           </div>
           <PaginatioinSection
             totalItems={
-              filteredMenuItems.length === 0 && !options
+              filteredMenuItems.length === 0 && !options.isOptions
                 ? menuItems.length
                 : filteredMenuItems.length
             }

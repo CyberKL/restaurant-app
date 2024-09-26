@@ -1,5 +1,135 @@
 {
   "users": [
 
+  ],
+  "food-items": [
+    {
+      "id": "1",
+      "reviews": []
+    },
+    {
+      "id": "2",
+      "reviews": []
+    },
+    {
+      "id": "3",
+      "reviews": []
+    },
+    {
+      "id": "4",
+      "reviews": []
+    },
+    {
+      "id": "5",
+      "reviews": []
+    },
+    {
+      "id": "6",
+      "reviews": []
+    },
+    {
+      "id": "7",
+      "reviews": []
+    },
+    {
+      "id": "8",
+      "reviews": []
+    },
+    {
+      "id": "9",
+      "reviews": []
+    },
+    {
+      "id": "10",
+      "reviews": []
+    },
+    {
+      "id": "11",
+      "reviews": []
+    },
+    {
+      "id": "12",
+      "reviews": []
+    },
+    {
+      "id": "13",
+      "reviews": []
+    },
+    {
+      "id": "14",
+      "reviews": []
+    },
+    {
+      "id": "15",
+      "reviews": []
+    },
+    {
+      "id": "16",
+      "reviews": []
+    },
+    {
+      "id": "17",
+      "reviews": []
+    },
+    {
+      "id": "18",
+      "reviews": []
+    },
+    {
+      "id": "19",
+      "reviews": []
+    },
+    {
+      "id": "20",
+      "reviews": []
+    },
+    {
+      "id": "21",
+      "reviews": []
+    },
+    {
+      "id": "22",
+      "reviews": []
+    },
+    {
+      "id": "23",
+      "reviews": []
+    },
+    {
+      "id": "24",
+      "reviews": []
+    },
+    {
+      "id": "25",
+      "reviews": []
+    },
+    {
+      "id": "26",
+      "reviews": []
+    },
+    {
+      "id": "27",
+      "reviews": []
+    },
+    {
+      "id": "28",
+      "reviews": []
+    },
+    {
+      "id": "29",
+      "reviews": []
+    },
+    {
+      "id": "30",
+      "reviews": []
+    },
+    {
+      "id": "31",
+      "reviews": []
+    },
+    {
+      "id": "32",
+      "reviews": []
+    }
   ]
 }
