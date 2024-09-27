@@ -38,7 +38,7 @@ export default function Login() {
     if (response) {
       if (response === "User not found") {
         setIsInvalidCreds(true);
-      } else {
+      } else { // Successful
         dispatch(login(response));
         navigate("/");
       }

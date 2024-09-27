@@ -15,11 +15,13 @@ export default function Reviews(props: ReviewsProps) {
   const userReviews: DBReview[] = useSelector(
     (state: RootState) => state.reviews
   );
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
 
   const dispatch = useDispatch();
 
   // Get other users reviews for the item
   useEffect(() => {
+    console.log(props.foodItemID)
     const fetchData = async () => {
       const response = await fetchOtherUsersReviews(props.foodItemID);
       if (response) {
@@ -28,19 +30,24 @@ export default function Reviews(props: ReviewsProps) {
     };
 
     fetchData();
-  }, []);
+  }, [isAuthenticated]);
 
   // Get user reviews for the item
   useEffect(() => {
+    console.log(props.foodItemID)
     const fetchData = async () => {
-      const response = await fetchUserReviews(props.foodItemID);
-      if (response) {
-        dispatch(setUserReviews(response));
+      if (isAuthenticated) {
+        const response = await fetchUserReviews(props.foodItemID);
+        if (response) {
+          dispatch(setUserReviews(response));
+          return
+        }
       }
+      dispatch(setUserReviews([]))
     };
 
     fetchData();
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <>
@@ -49,7 +56,7 @@ export default function Reviews(props: ReviewsProps) {
           There is no reviews yet, be the first one!
         </div>
       ) : (
-        <ScrollArea className="h-[200px] p-4">
+        <ScrollArea className="h-[320px] p-4">
           <div className="divide-y-2">
             {userReviews.length === 0
               ? null

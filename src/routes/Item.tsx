@@ -11,7 +11,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Toaster } from "@/components/ui/toaster";
 import Reviews from "@/components/layout/Reviews";
 import ReviewDialog from "@/components/common/ReviewDialog";
-import { handleFavorites } from "@/features/favorites/favoritesSlice";
+import { handleFavorites } from "@/features/auth/authSlice";
+import { editFavorites } from "@/api/api";
 
 export default function Item() {
   const params = useParams(); // Gets URL parameters
@@ -25,8 +26,8 @@ export default function Item() {
   ); // The quantity of the item in cart
   const [action, setAction] = useState<string>("");
 
-  const [isFavorite, setIsFavorite] = useState<boolean>(false)
-  const favorites = useSelector((state: RootState) => state.favorites)
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const favorites = useSelector((state: RootState) => state.auth.favorites);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,8 +56,6 @@ export default function Item() {
     }
   };
 
-
-  
   // Gets the item entry from the DB
   useEffect(() => {
     const fetchItem = async () => {
@@ -68,82 +67,104 @@ export default function Item() {
     fetchItem();
   }, []);
 
-
   // Check if the item is currently favorited
   useEffect(() => {
-    if(item) {setIsFavorite(!!favorites.find(i => i.id=== item.id))}
-  }, [favorites, item])
+    if (item) {
+      setIsFavorite(!!favorites.find((i) => i.id === item.id));
+    }
+  }, [favorites, item]);
 
+  const handleFavoritesClick = async () => {
+    if (isAuthenticated && item)
+    {
+      const mode = isFavorite ? "remove" : "add"
+      const response = await editFavorites(item, mode);
+      if (response && response.ok) dispatch(handleFavorites(item))
+      else console.error("Server Error: Item not favorited")
 
-  if(item) return (
-    <>
-      <Navbar />
+    }
+    else navigate("/login")
+  }
 
-      <main className="flex flex-col items-center h-screen">
-        <div className="space-y-60">
-          <div className="max-w-3xl space-y-4">
-            <img
-              src={item?.image}
-              alt="food item image"
-              className="h-72 w-full border-b border-gray-300"
-            />
+  if (item)
+    return (
+      <>
+        <Navbar />
 
-            <div className="grid grid-cols-12">
-              <div className="space-y-2 col-span-9">
-                <h1 className="text-3xl">{item?.title}</h1>
-                <p className="text-gray-600">{item?.description}</p>
+        <main className="flex flex-col items-center">
+          <div className="space-y-60">
+            <div className="max-w-3xl space-y-4">
+              <img
+                src={item?.image}
+                alt="food item image"
+                className="h-72 w-full border-b border-gray-300"
+              />
+
+              <div className="grid grid-cols-12">
+                <div className="space-y-2 col-span-9">
+                  <h1 className="text-3xl">{item?.title}</h1>
+                  <p className="text-gray-600">{item?.description}</p>
+                </div>
+                <div className="col-span-3 flex items-center gap-2">
+                  <Button
+                    variant={"ghost"}
+                    size={"icon"}
+                    onClick={decrement}
+                    className="active:scale-105"
+                  >
+                    <CircleMinus color="#16a34a" />
+                  </Button>
+                  <span
+                    className={`animate-in ${
+                      action === "increment"
+                        ? "slide-in-from-bottom-4"
+                        : action === "decrement"
+                        ? "slide-in-from-top-4"
+                        : ""
+                    }`}
+                    key={quantity}
+                  >
+                    {quantity}
+                  </span>
+                  <Button
+                    variant={"ghost"}
+                    size={"icon"}
+                    onClick={increment}
+                    className="active:scale-105"
+                  >
+                    <CirclePlus color="#16a34a" />
+                  </Button>
+                </div>
+
+                {/* Add to favorites button */}
+                <div className="col-span-3 col-start-10 justify-end flex px-4">
+                  <Button
+                    variant={"ghost"}
+                    size={"icon"}
+                    onClick={handleFavoritesClick}
+                  >
+                    <Star
+                      stroke="#16a34a"
+                      fill={isFavorite ? "#16a34a" : "white"}
+                    />
+                  </Button>
+                </div>
               </div>
-              <div className="col-span-3 flex items-center gap-2">
-                <Button
-                  variant={"ghost"}
-                  size={"icon"}
-                  onClick={decrement}
-                  className="active:scale-105"
-                >
-                  <CircleMinus color="#16a34a" />
-                </Button>
-                <span
-                  className={`animate-in ${
-                    action === "increment"
-                      ? "slide-in-from-bottom-4"
-                      : action === "decrement"
-                      ? "slide-in-from-top-4"
-                      : ""
-                  }`}
-                  key={quantity}
-                >
-                  {quantity}
-                </span>
-                <Button
-                  variant={"ghost"}
-                  size={"icon"}
-                  onClick={increment}
-                  className="active:scale-105"
-                >
-                  <CirclePlus color="#16a34a" />
-                </Button>
-              </div>
-              <div className="col-span-3 col-start-10 justify-end flex px-4">
-                <Button variant={"ghost"} size={"icon"} onClick={() => isAuthenticated ? dispatch(handleFavorites(item)) : navigate("/login")}>
-                  <Star stroke="#16a34a" fill={isFavorite ? '#16a34a' : 'white'} />
-                </Button>
+            </div>
+            {/* Review section */}
+            <div className="space-y-4">
+              <ReviewDialog itemID={item.id} mode="add" />
+              {/* Comments section */}
+              <div className="py-14 space-y-5">
+                <h1 className="font-bold text-xl">Reviews</h1>
+                <Reviews foodItemID={item?.id} />
               </div>
             </div>
           </div>
-          {/* Review section */}
-          <div className="space-y-4">
-            <ReviewDialog itemID={item.id} mode="add" />
-            {/* Comments section */}
-            <div>
-              <h1 className="font-bold text-xl">Reviews</h1>
-              <Reviews foodItemID={item?.id} />
-            </div>
-          </div>
-        </div>
-      </main>
+        </main>
 
-      <Footer />
-      <Toaster />
-    </>
-  );
+        <Footer />
+        <Toaster />
+      </>
+    );
 }

@@ -4,11 +4,13 @@ import { UIReview, DBReview } from "@/types/review";
 import User from "@/types/user";
 import { LoginFormSchema } from "@/validations/loginSchema";
 import { ReviewFormSchema } from "@/validations/reviewSchema";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
+import MenuItem from "@/types/foodItem";
 
 interface LoggedinUser extends User {
   id: number;
   orders: Order[];
+  favorites: MenuItem[];
 }
 
 interface FoodItem {
@@ -41,7 +43,8 @@ export const createUser = async (data: User): Promise<Response | null> => {
       },
       body: JSON.stringify({
         ...data,
-        orders: [], // Orders field shouldn't be added manually rather it should be in the db schema
+        orders: [], // orders field shouldn't be added manually rather it should be in the db schema
+        favorites: [], // favorites field shouldn't be added manually rather it should be in the db schema
       }),
     });
     return response;
@@ -63,11 +66,13 @@ export const authenticateUser = async (
     );
 
     if (user) {
-      const token = user.id; // simulating a token, should use JWT
+      const token = user.id; // simulating a token. should use JWT
       const displayName = (user.fname[0] + user.lname[0]).toUpperCase();
+      const favorites: MenuItem[] = user.favorites;
       return JSON.stringify({
         token: JSON.stringify(token),
         displayName: displayName,
+        favorites: favorites,
       });
     } else {
       const error = "User not found";
@@ -160,7 +165,7 @@ export const addReview = async (
       name: name,
       rating: data.rating,
       comment: data.comment,
-    } 
+    };
     reviews.push(newReview);
 
     const response = await fetch(
@@ -227,11 +232,15 @@ export const fetchUserReviews = async (foodItemID: number) => {
   return null;
 };
 
-export const updateUserReview = async (foodItemID: number, reveiwID: string, deleteItem: boolean=false, data?: ReviewFormSchema): Promise<Response | null> => {
+export const updateUserReview = async (
+  foodItemID: number,
+  reveiwID: string,
+  deleteItem: boolean = false,
+  data?: ReviewFormSchema
+): Promise<Response | null> => {
   try {
-    if(!deleteItem && !data)
-    {
-      throw new Error("No new info provided")
+    if (!deleteItem && !data) {
+      throw new Error("No new info provided");
     }
 
     // Get user id
@@ -242,46 +251,76 @@ export const updateUserReview = async (foodItemID: number, reveiwID: string, del
     const userID = JSON.parse(token);
 
     // Get the target review
-    const foodItem: FoodItem = await fetchFoodItems(foodItemID) as FoodItem
-    const reviews = foodItem.reviews
-    const review = reviews.find((item) => item.reveiwID === reveiwID)
+    const foodItem: FoodItem = (await fetchFoodItems(foodItemID)) as FoodItem;
+    const reviews = foodItem.reviews;
+    const review = reviews.find((item) => item.reveiwID === reveiwID);
 
-    if (!review){
-      throw new Error("Review not found")
+    if (!review) {
+      throw new Error("Review not found");
     }
 
-    if (userID === review.userID) // Check that the user changing the review is the correct user
-    {
+    if (userID === review.userID) {
+      // Check that the user changing the review is the correct user
       let updatedReviews: DBReview[] = reviews;
-      if(deleteItem)
-      {
-        updatedReviews = updatedReviews.filter((item) => item !== review)
+      if (deleteItem) {
+        updatedReviews = updatedReviews.filter((item) => item !== review);
+      } else {
+        data = data as ReviewFormSchema; // If deleteItem is false then data will be present as an error will be thrown otherwise when the function is called
+        review.rating = data.rating;
+        review.comment = data?.comment;
+        updatedReviews.forEach((item) =>
+          item.reveiwID === reveiwID ? (item = review) : null
+        );
       }
-      else
-      {
-        data = data as ReviewFormSchema // If deleteItem is false then data will be present as an error will be thrown otherwise when the function is called
-        review.rating = data.rating
-        review.comment = data?.comment
-        updatedReviews.forEach((item) => item.reveiwID === reveiwID ? item = review : null)
-      }
-      const response = fetch(`http://localhost:3000/food-items/${String(foodItemID)}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          reviews: updatedReviews
-        })
-      })
-      return response
-    }
-    else
-    {
+      const response = fetch(
+        `http://localhost:3000/food-items/${String(foodItemID)}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            reviews: updatedReviews,
+          }),
+        }
+      );
+      return response;
+    } else {
       throw new Error("Permission denied");
     }
-
   } catch (error) {
-    console.error("Error while updating user review", error)
+    console.error("Error while updating user review", error);
+  }
+  return null;
+};
+
+export const editFavorites = async (item: MenuItem, mode: string): Promise<Response | null> => {
+  try {
+    // Get user id and user
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      throw new Error("Authentication error: no authToken found");
+    }
+    const userID = JSON.parse(token);
+    const user: LoggedinUser = (await fetchUsers(userID)) as LoggedinUser; // Type assertion as ID is provided
+
+    let favorites = user.favorites
+    if (mode === "add") favorites.push(item)
+    else if (mode === "remove") favorites = favorites.filter((i) => i.id !== item.id)
+
+    const response = fetch(`http://localhost:3000/users/${userID}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        favorites: favorites
+      })
+    })
+
+    return response
+  } catch (error) {
+    console.error("Error occurred while editing favorites", error);
   }
   return null
-}
+};

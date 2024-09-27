@@ -7,7 +7,9 @@ import { RootState } from "@/app/store";
 import { Link, useNavigate } from "react-router-dom";
 import CartFoodItem from "@/types/cartFoodItem";
 import { Rating } from "react-simple-star-rating";
-import { handleFavorites } from "@/features/favorites/favoritesSlice";
+import { handleFavorites } from "@/features/auth/authSlice";
+import { editFavorites } from "@/api/api";
+import FoodItem from "@/types/foodItem";
 
 interface MenuItemProps extends CartFoodItem {}
 
@@ -19,7 +21,7 @@ export default function MenuItem(props: MenuItemProps) {
   );
   
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
-  const favorites = useSelector((state: RootState) => state.favorites);
+  const favorites = useSelector((state: RootState) => state.auth.favorites);
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -50,6 +52,19 @@ export default function MenuItem(props: MenuItemProps) {
   useEffect(() => {
     setIsFavorite(!!favorites.find((i) => i.id === props.id));
   }, [favorites]);
+
+  const handleFavoritesClick = async () => {
+    if (isAuthenticated)
+    {
+      const mode = isFavorite ? "remove" : "add"
+      const { quantity, ...item } = props;
+      const response = await editFavorites(item as FoodItem, mode);
+      if (response && response.ok) dispatch(handleFavorites(props))
+      else console.error("Server Error: Item not favorited")
+
+    }
+    else navigate("/login")
+  }
 
   return (
     <div className="grid grid-cols-12 max-w-lg py-4">
@@ -101,11 +116,7 @@ export default function MenuItem(props: MenuItemProps) {
           <Button
             variant={"ghost"}
             size={"icon"}
-            onClick={() =>
-              isAuthenticated
-                ? dispatch(handleFavorites(props))
-                : navigate("/login")
-            }
+            onClick={handleFavoritesClick}
           >
             <Star stroke="#16a34a" fill={isFavorite ? "#16a34a" : "white"} />
           </Button>
