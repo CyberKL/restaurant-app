@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { LoginFormSchema, loginSchema } from "@/validations/loginSchema";
+import { LoginFormSchema, createLoginSchema } from "@/validations/loginSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { authenticateUser } from "@/api/api";
 import { useDispatch } from "react-redux";
@@ -19,6 +19,7 @@ import { login } from "@/features/auth/authSlice";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const [error, setError] = useState<boolean>(false);
@@ -26,6 +27,9 @@ export default function Login() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [t, i18n] = useTranslation();
+
+  const loginSchema = createLoginSchema(t); // The schema is being generated based on the language to return correct errors
 
   const form = useForm<LoginFormSchema>({
     resolver: yupResolver(loginSchema),
@@ -53,7 +57,7 @@ export default function Login() {
   return (
     <div className="relative grid grid-cols-12">
       {/* Back button */}
-      <div className="absolute top-0 left-0 p-5">
+      <div className={`absolute top-0 p-5 ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}>
         <Link to={"/"}>
           <Button
             variant={"ghost"}
@@ -67,14 +71,14 @@ export default function Login() {
 
       {/* Form */}
       <div className="sm:col-span-6 col-span-full flex flex-col items-center justify-center gap-20 p-10">
-        <h1 className="font-bold text-3xl">Login</h1>
+        <h1 className="font-bold text-3xl">{t('login.title')}</h1>
         <div className="w-full flex flex-col items-center justify-center space-y-3">
           <p
             className={`text-red-500 ${
               isInvalidCreds ? "visible" : "invisible"
             }`}
           >
-            Invalid email or password
+            {t('login.invalid')}
           </p>
           <Form {...form}>
             <form
@@ -86,7 +90,7 @@ export default function Login() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t('login.email')}</FormLabel>
                     <FormControl>
                       <Input {...field} type="email" />
                     </FormControl>
@@ -99,7 +103,7 @@ export default function Login() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t('login.password')}</FormLabel>
                     <FormControl>
                       <Input {...field} type="password" />
                     </FormControl>
@@ -111,31 +115,31 @@ export default function Login() {
                 type="submit"
                 className="w-full bg-green-600 col-span-full"
               >
-                Submit
+                {t('login.submit')}
               </Button>
             </form>
           </Form>
         </div>
         <p className="text-sm">
-          No account?{" "}
+        {t('login.register.text')}{" "}
           <Link
             to={"/register"}
             className="text-green-600 underline italic font-semibold"
           >
-            Register Now
+            {t('login.register.link')}
           </Link>
         </p>
       </div>
 
-      <div className="relative sm:flex items-center justify-center sm:col-span-6 col-span-full h-screen bg-[url(@/assets/login.jpg)] bg-cover rounded-l-3xl hidden px-10">
+      <div className={`relative sm:flex items-center justify-center sm:col-span-6 col-span-full h-screen bg-[url(@/assets/login.jpg)] bg-cover ${i18n.language === 'ar' ? 'rounded-r-3xl' : 'rounded-l-3xl'} hidden px-10`}>
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-70 rounded-l-3xl"></div>
+        <div className={`absolute inset-0 bg-black opacity-70 ${i18n.language === 'ar' ? 'rounded-r-3xl' : 'rounded-l-3xl'}`}></div>
 
         {/* Header */}
         <div className="text-center text-white z-10 space-y-4 flex flex-col items-center">
-          <h1 className="text-6xl">Welcome Back!</h1>
+          <h1 className="text-6xl">{t('login.header')}</h1>
           <p className=" text-lg max-w-lg">
-            Log in to access your account, and start ordering!
+          {t('login.subheader')}
           </p>
         </div>
       </div>

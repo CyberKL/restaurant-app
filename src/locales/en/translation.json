@@ -1,0 +1,213 @@
+{
+  "navbar": {
+    "menu": {
+      "home": "Home",
+      "menu": "Menu",
+      "aboutUs": "About Us",
+      "contact": "Contact",
+      "offers": "Offers",
+      "locations": "Locations",
+      "selectLang": "Select Language"
+    },
+    "auth": {
+      "login": "Login",
+      "register": "Register"
+    },
+    "account": {
+      "title": "My Account",
+      "profile": "Profile",
+      "cart": "Cart",
+      "orderHistory": "Order History",
+      "favorites": "Favorites",
+      "logout": "Logout"
+    }
+  },
+  "hero": {
+    "title": "Fuel Your Day with Fresh, Healthy Flavors!",
+    "description": "Discover our delicious, nutrient-packed lunch options made from the freshest ingredients. Order now for a meal that loves you back."
+  },
+  "footer": {
+    "aboutUs": "About Us",
+    "menu": "Menu",
+    "nutritionInfo": "Nutrition Info",
+    "specials": "Specials",
+    "contactUs": "Contact Us",
+    "careers": "Careers",
+    "events": "Events",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  },
+  "login": {
+    "header": "Welcome Back!",
+    "subheader": "Log in to access your account, and start ordering!",
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Submit",
+    "register": {
+      "text": "No account?",
+      "link": "Register Now"
+    },
+    "invalid": "Invalid email or password",
+    "validations": {
+      "email": {
+        "empty": "Please enter an email",
+        "invalid": "Please provide a correct email"
+      },
+      "password": "Please enter a password"
+    }
+  },
+  "register": {
+    "header": "Join Us Today!",
+    "subheader": "Sign up now to be part of our healthy eating community and get exclusive access to our latest recipes and offers!.",
+    "title": "Register",
+    "fname": "First Name",
+    "lname": "Last Name",
+    "email": "Email",
+    "dob": "Date of Birth",
+    "password": "Password",
+    "confirmPass": "Confirm Password",
+    "submit": "Submit",
+    "login": {
+      "text": "Already have an account?",
+      "link": "Log In"
+    },
+    "validations": {
+      "missing": "This field is required",
+      "email": "Please provide a valid email",
+      "dob": {
+        "invalid": "Invalid date format",
+        "min": "Date of birth cannot be that far in the past",
+        "max": "Date of birth cannot be in the future"
+      },
+      "password": {
+        "min": "Password must be at least 8 characters long",
+        "max": "Password must be less than 32 characters long",
+        "matches": "Password must contain at least one digit, lowercase letter, uppercase letter, and a special character"
+      },
+      "confirmPass": "Passwords must match"
+    },
+    "success": {
+      "title": "Registration successful!",
+      "description": "You have registered successfully!, please log in to continue."
+    }
+  },
+  "cart": {
+    "empty": "Looks like your cart is empty add items and come back!",
+    "add": "Add Items",
+    "checkout": "Checkout"
+  },
+  "checkout": {
+    "payment": {
+      "title": "Pay with",
+      "credit": "Credit card",
+      "cash": "Cash"
+    },
+    "promo": {
+      "title": "Promo code",
+      "description": "Save on your order",
+      "placeholder": "Enter promo code"
+    },
+    "summary": {
+      "title": "Payment Summary",
+      "subtotal": "Subtotal",
+      "delivery": "Delivery Fee",
+      "tax": "Service Fee",
+      "total": "Total Amount"
+    },
+    "submit": "Place order",
+    "success": {
+      "title": "Order Placed!",
+      "description": "Arriving in 60 minutes!"
+    },
+    "fail": {
+      "title": "Order Not Placed",
+      "description": "Please try agian"
+    }
+  },
+  "favorites": {
+    "empty": "You currently don't have any favorite items"
+  },
+  "currency": "EGP",
+  "menuItem": {
+    "view": "View item"
+  },
+  "pagination": {
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "foodMenu": {
+    "loadError": "Couldn't fetch menu items",
+    "title": "Menu",
+    "filterError": "There is no menu items matching your criteria",
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "categories": {
+      "all": "All",
+      "top": "Top dishes",
+      "offers": "Offers",
+      "value": "Value meals",
+      "appetizers": "Appetizers",
+      "salads": "Salads",
+      "main": "Main dishes",
+      "desserts": "Desserts"
+    },
+    "filtering": {
+      "title": "Options",
+      "description": "Sort and Filter menu items",
+      "sort": {
+        "title": "Sort by",
+        "placeholder": "Sort",
+        "alphaA": "Alphabetically, A-Z",
+        "alphaD": "Alphabetically, Z-A",
+        "priceH": "Price, High to Low",
+        "priceL": "Price, Low to High",
+        "ratingH": "Rating, High to Low",
+        "ratingL": "Rating, Low to High"
+      },
+      "filter": {
+        "title": "Filter",
+        "cuisine": "Cuisine Type",
+        "price": "Price Range",
+        "rating": "Rating"
+      }
+    },
+    "reset": "Reset",
+    "confirm": "Confirm",
+    "search": "Search",
+    "options": {
+      "price": "Price",
+      "rating": "Rating"
+    }
+  },
+  "reviews": {
+    "empty": "There is no reviews yet, be the first one!"
+  },
+  "review": {
+    "success": "Review deleted",
+    "fail": {
+      "title": "Review not deleted",
+      "description": "Error while deleting review, please try again"
+    }
+  },
+  "reviewDialog": {
+    "trigger": "Add Review",
+    "actions": {
+      "add": "Add",
+      "edit": "Edit"
+    },
+    "title": "Review",
+    "description": "Rate your experience with this dish and leave a short review.",
+    "rating": "Rating",
+    "comment": "Comment",
+    "submit": "Submit",
+    "validation": "Rating is required",
+    "success": "Review submitted!",
+    "fail": "An error occurred while submitting your reveiw"
+  },
+  "item": {
+    "reviews": "Reviews"
+  }
+}

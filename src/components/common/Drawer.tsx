@@ -4,6 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { Link as Scroll } from "react-scroll";
 import { closeDrawer } from "@/features/drawer/drawerSlice";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "../ui/dropdown-menu";
+import { Globe } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface DrawerProps {
   open: boolean;
@@ -16,8 +26,9 @@ export default function Drawer({ open = false }: DrawerProps) {
     (state: RootState) => state.auth.isAuthenticated
   );
 
-  const dispatch = useDispatch()
-  
+  const dispatch = useDispatch();
+  const [t, i18n] = useTranslation();
+
   return (
     <div
       className={`${
@@ -28,8 +39,8 @@ export default function Drawer({ open = false }: DrawerProps) {
       <div className="px-5">
         <ul className="space-y-5 text-2xl">
           <li>
-            <Link to={"/"} className="text-green-600 font-semibold">
-              Home
+            <Link to={"/"} className="text-green-600 text-lg font-semibold">
+              {t("navbar.menu.home")}
             </Link>
           </li>
           <li>
@@ -38,41 +49,81 @@ export default function Drawer({ open = false }: DrawerProps) {
                 to={"menu"}
                 smooth={true}
                 duration={200}
-                className="text-green-600 font-semibold cursor-pointer"
                 onClick={() => dispatch(closeDrawer())}
+                className="text-green-600 text-lg font-semibold cursor-pointer"
               >
-                Menu
+                {t("navbar.menu.menu")}
               </Scroll>
             ) : (
               <Link
                 to={"/"}
-                className="text-green-600 font-semibold"
-                state={{ scrollToMenu: true }}
+                className="text-green-600 text-lg font-semibold"
                 onClick={() => dispatch(closeDrawer())}
+                state={{ scrollToMenu: true }}
               >
-                Menu
+                {t("navbar.menu.menu")}
               </Link>
             )}
           </li>
           <li>
-            <Link to="/about" className="text-green-600 font-semibold">
-              About Us
+            <Link
+              to="/about"
+              className="text-green-600 text-lg font-semibold text-nowrap"
+            >
+              {t("navbar.menu.aboutUs")}
             </Link>
           </li>
           <li>
-            <Link to="/contact" className="text-green-600 font-semibold">
-              Contact
+            <Link
+              to="/contact"
+              className="text-green-600 text-lg font-semibold"
+            >
+              {t("navbar.menu.contact")}
             </Link>
           </li>
           <li>
-            <Link to="/offers" className="text-green-600 font-semibold">
-              Offers
+            <Link to="/offers" className="text-green-600 text-lg font-semibold">
+              {t("navbar.menu.offers")}
             </Link>
           </li>
           <li>
-            <Link to="/locations" className="text-green-600 font-semibold">
-              Locations
+            <Link
+              to="/locations"
+              className="text-green-600 text-lg font-semibold"
+            >
+              {t("navbar.menu.locations")}
             </Link>
+          </li>
+          <li>
+            <DropdownMenu dir={i18n.language === "ar" ? "rtl" : "ltr"}>
+              <DropdownMenuTrigger>
+                <Globe color="#16a34a" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>
+                  {t("navbar.menu.selectLang")}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    i18n.changeLanguage("en");
+                    document.body.setAttribute("dir", "ltr");
+                  }}
+                  dir="ltr"
+                >
+                  English
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    i18n.changeLanguage("ar");
+                    document.body.setAttribute("dir", "rtl");
+                  }}
+                  dir="rtl"
+                >
+                  العربية
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </li>
         </ul>
       </div>
@@ -86,7 +137,7 @@ export default function Drawer({ open = false }: DrawerProps) {
               size={"lg"}
               className="text-green-600 text-lg font-semibold max-w-full w-full"
             >
-              Login
+              {t("navbar.auth.login")}
             </Button>
           </Link>
           <Link to={"/register"}>
@@ -95,7 +146,7 @@ export default function Drawer({ open = false }: DrawerProps) {
               size={"lg"}
               className="bg-green-600 text-lg font-semibold max-w-full w-full"
             >
-              Register
+              {t("navbar.auth.register")}
             </Button>
           </Link>
         </div>

@@ -2,11 +2,13 @@ import { RootState } from "@/app/store";
 import CartItem from "@/components/common/CartItem";
 import Navbar from "@/components/common/Navbar";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function Cart() {
   const cartItems = useSelector((state: RootState) => state.cart)
+  const [t] = useTranslation()
   
   return (
     <div>
@@ -19,7 +21,7 @@ export default function Cart() {
         </div>
       ) : (
         <div className="flex justify-center items-center text-xl h-[80vh]">
-          Looks like your cart is empty add items and come back!
+          {t('cart.empty')}
         </div>
       )}
       <div className="fixed bottom-0 flex justify-center w-full py-5 bg-white border-t border-gray-300">
@@ -30,7 +32,7 @@ export default function Cart() {
                 size={"lg"}
                 className="text-green-600 w-full hover:scale-110 transition"
               >
-                Add Items
+                {t('cart.add')}
               </Button>
             </Link>
             <Link to={"/checkout"} className={`${cartItems.length === 0 ? 'pointer-events-none' : ''}`}>
@@ -39,7 +41,7 @@ export default function Cart() {
                 className="bg-green-600 w-full hover:scale-110 transition"
                 disabled={cartItems.length === 0}
               >
-                Checkout
+                {t('cart.checkout')}
               </Button>
             </Link>
           </div>

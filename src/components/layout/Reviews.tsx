@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { setReviews as setUserReviews } from "@/features/reviews/reviewsSlice";
+import { useTranslation } from "react-i18next";
 
 interface ReviewsProps {
   foodItemID: number;
@@ -18,6 +19,7 @@ export default function Reviews(props: ReviewsProps) {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
 
   const dispatch = useDispatch();
+  const [t] = useTranslation();
 
   // Get other users reviews for the item
   useEffect(() => {
@@ -34,7 +36,6 @@ export default function Reviews(props: ReviewsProps) {
 
   // Get user reviews for the item
   useEffect(() => {
-    console.log(props.foodItemID)
     const fetchData = async () => {
       if (isAuthenticated) {
         const response = await fetchUserReviews(props.foodItemID);
@@ -52,23 +53,24 @@ export default function Reviews(props: ReviewsProps) {
   return (
     <>
       {userReviews.length === 0 && reviews.length === 0 ? (
-        <div className="flex justify-center items-center h-[100px]">
-          There is no reviews yet, be the first one!
+        <div className="flex justify-center items-center h-[100px]" aria-live="polite" role="status">
+          {t('reviews.empty')}
         </div>
       ) : (
-        <ScrollArea className="h-[320px] p-4">
+        <ScrollArea className="h-[320px] p-4" aria-label="Reviews list">
           <div className="divide-y-2">
-            {userReviews.length === 0
-              ? null
-              : userReviews.map((item, index) => (
-                  <Review {...item} key={index} />
-                ))}
-            {reviews.length === 0
-              ? null
-              : reviews.map((item, index) => <Review {...item} key={index} />)}
+            {userReviews.length !== 0 &&
+              userReviews.map((item, index) => (
+                <Review {...item} key={index} aria-labelledby={`user-review-${index}`} />
+              ))}
+            {reviews.length !== 0 &&
+              reviews.map((item, index) => (
+                <Review {...item} key={index} aria-labelledby={`review-${index}`} />
+              ))}
           </div>
         </ScrollArea>
       )}
     </>
   );
+  
 }

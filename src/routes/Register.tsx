@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   RegisterFormSchema,
-  registerationSchema,
+  createRegistrationSchema,
 } from "@/validations/registrationSchema";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +23,7 @@ import { AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
+import { useTranslation } from "react-i18next";
 
 export default function Register() {
   const [error, setError] = useState<boolean>(false);
@@ -30,9 +31,11 @@ export default function Register() {
   const { toast } = useToast();
 
   const navigate = useNavigate();
+  const [t, i18n] = useTranslation();
+  const registrationSchema = createRegistrationSchema(t); // The schema is being generated based on the language to return correct errors
 
   const form = useForm<RegisterFormSchema>({
-    resolver: yupResolver(registerationSchema),
+    resolver: yupResolver(registrationSchema),
     mode: "onChange",
   });
 
@@ -51,9 +54,8 @@ export default function Register() {
     if (response && response.ok) {
       navigate("/login");
       toast({
-        title: "Registration successful!",
-        description:
-          "You have registered successfully!, please log in to continue.",
+        title: t('register.success.title'),
+        description: t('register.success.description')
       });
     } else {
       setError(true);
@@ -66,7 +68,7 @@ export default function Register() {
   return (
     <div className="relative grid grid-cols-12">
       {/* Back button */}
-      <div className="absolute top-0 left-0 p-5">
+      <div className={`absolute top-0 p-5 ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}>
         <Link to={"/"}>
           <Button
             variant={"ghost"}
@@ -80,7 +82,7 @@ export default function Register() {
 
       {/* Form */}
       <div className="sm:col-span-6 col-span-full flex flex-col items-center justify-center gap-20 p-10">
-        <h1 className="font-bold text-3xl">Register</h1>
+        <h1 className="font-bold text-3xl">{t('register.title')}</h1>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -91,7 +93,7 @@ export default function Register() {
               name="fname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel>{t('register.fname')}</FormLabel>
                   <FormControl>
                     <Input {...field} type="text" />
                   </FormControl>
@@ -104,7 +106,7 @@ export default function Register() {
               name="lname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last Name</FormLabel>
+                  <FormLabel>{t('register.lname')}</FormLabel>
                   <FormControl>
                     <Input {...field} type="text" />
                   </FormControl>
@@ -117,7 +119,7 @@ export default function Register() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('register.email')}</FormLabel>
                   <FormControl>
                     <Input {...field} type="email" />
                   </FormControl>
@@ -130,7 +132,7 @@ export default function Register() {
               name="dob"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date of Birth</FormLabel>
+                  <FormLabel>{t('register.dob')}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -151,7 +153,7 @@ export default function Register() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('register.password')}</FormLabel>
                   <FormControl>
                     <Input {...field} type="password" />
                   </FormControl>
@@ -164,7 +166,7 @@ export default function Register() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>{t('register.confirmPass')}</FormLabel>
                   <FormControl>
                     <Input {...field} type="password" />
                   </FormControl>
@@ -178,26 +180,25 @@ export default function Register() {
           </form>
         </Form>
         <p className="text-sm">
-          Already have an account?{" "}
+        {t('register.login.text')}{" "}
           <Link
             to={"/login"}
             className="text-green-600 underline italic font-semibold"
           >
-            Log In
+            {t('register.login.link')}
           </Link>
         </p>
       </div>
 
-      <div className="relative sm:flex items-center justify-center sm:col-span-6 col-span-full h-screen bg-[url(@/assets/register.jpg)] bg-cover rounded-l-3xl hidden px-10">
+      <div className={`relative sm:flex items-center justify-center sm:col-span-6 col-span-full h-screen bg-[url(@/assets/register.jpg)] bg-cover ${i18n.language === 'ar' ? 'rounded-r-3xl' : 'rounded-l-3xl'} hidden px-10`}>
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-70 rounded-l-3xl"></div>
+        <div className={`absolute inset-0 bg-black opacity-70 ${i18n.language === 'ar' ? 'rounded-r-3xl' : 'rounded-l-3xl'}`}></div>
 
         {/* Header */}
         <div className="text-center text-white z-10 space-y-4 flex flex-col items-center">
-          <h1 className="text-6xl">Join Us Today!</h1>
+          <h1 className="text-6xl">{t('register.header')}</h1>
           <p className=" text-lg max-w-lg">
-            Sign up now to be part of our healthy eating community and get
-            exclusive access to our latest recipes and offers!.
+          {t('register.subheader')}
           </p>
         </div>
       </div>

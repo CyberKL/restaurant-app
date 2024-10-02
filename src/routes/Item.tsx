@@ -13,6 +13,7 @@ import Reviews from "@/components/layout/Reviews";
 import ReviewDialog from "@/components/common/ReviewDialog";
 import { handleFavorites } from "@/features/auth/authSlice";
 import { editFavorites } from "@/api/api";
+import { useTranslation } from "react-i18next";
 
 export default function Item() {
   const params = useParams(); // Gets URL parameters
@@ -31,6 +32,7 @@ export default function Item() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [t] = useTranslation();
 
   // Increment quantity in cart and UI
   const increment = (): void => {
@@ -105,7 +107,7 @@ export default function Item() {
                   <h1 className="text-3xl">{item?.title}</h1>
                   <p className="text-gray-600">{item?.description}</p>
                 </div>
-                <div className="col-span-3 flex items-center gap-2">
+                <div className="col-span-3 flex items-center justify-end gap-2">
                   <Button
                     variant={"ghost"}
                     size={"icon"}
@@ -156,7 +158,7 @@ export default function Item() {
               <ReviewDialog itemID={item.id} mode="add" />
               {/* Comments section */}
               <div className="py-14 space-y-5">
-                <h1 className="font-bold text-xl">Reviews</h1>
+                <h1 className="font-bold text-xl">{t('item.reviews')}</h1>
                 <Reviews foodItemID={item?.id} />
               </div>
             </div>

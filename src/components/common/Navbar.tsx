@@ -14,9 +14,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { LogOut } from "lucide-react";
+import { Globe, LogOut } from "lucide-react";
 import { logout } from "@/features/auth/authSlice";
 import { interactWithDrawer } from "@/features/drawer/drawerSlice";
+import { useTranslation } from "react-i18next";
 
 export default function Navbar() {
   const isAuthenticated = useSelector(
@@ -28,10 +29,12 @@ export default function Navbar() {
   const location = useLocation();
   const displayName = useSelector((state: RootState) => state.auth.displayName);
 
+  const [t, i18n] = useTranslation();
+
   return (
-    <nav className="px-4 py-4 md:grid md:grid-cols-12 flex justify-between border-b border-gray-300 bg-white sticky top-0 z-50">
+    <nav className="px-4 py-4 lg:grid lg:grid-cols-12 flex justify-between border-b border-gray-300 bg-white sticky top-0 z-50">
       {/* Drawer menu */}
-      <div className="md:hidden block place-content-center">
+      <div className="lg:hidden block place-content-center">
         <Button
           variant={"ghost"}
           onClick={() => dispatch(interactWithDrawer())}
@@ -86,10 +89,12 @@ export default function Navbar() {
       </div>
 
       {/* Logo section */}
-      <div className="md:col-span-4">
+      <div className="lg:col-span-2" dir="ltr">
         <Link
           to={"/"}
-          className="flex items-center justify-center md:justify-normal md:items-start md:flex-col lg:flex-row lg:items-center gap-2"
+          className={`flex items-center justify-center ${
+            i18n.language === "ar" ? "lg:justify-end" : "lg:justify-start"
+          } lg:items-start lg:flex-col xl:flex-row xl:items-center gap-2`}
         >
           <img src={logo} alt="logo" className="size-14" />
           <span className="text-green-600 text-2xl">GreenBite</span>
@@ -97,14 +102,14 @@ export default function Navbar() {
       </div>
 
       {/* Placeholder to make justify-between work */}
-      {!isAuthenticated && <div className="md:hidden block w-[62px]"></div>}
+      {!isAuthenticated && <div className="lg:hidden block w-[62px]"></div>}
 
       {/* Navigations section */}
-      <div className="col-span-4 place-content-center hidden md:block">
+      <div className="col-span-8 place-content-center hidden lg:block">
         <ul className="flex items-center gap-5 justify-center">
           <li>
             <Link to={"/"} className="text-green-600 text-lg font-semibold">
-              Home
+              {t("navbar.menu.home")}
             </Link>
           </li>
           <li>
@@ -115,7 +120,7 @@ export default function Navbar() {
                 duration={200}
                 className="text-green-600 text-lg font-semibold cursor-pointer"
               >
-                Menu
+                {t("navbar.menu.menu")}
               </Scroll>
             ) : (
               <Link
@@ -123,7 +128,7 @@ export default function Navbar() {
                 className="text-green-600 text-lg font-semibold"
                 state={{ scrollToMenu: true }}
               >
-                Menu
+                {t("navbar.menu.menu")}
               </Link>
             )}
           </li>
@@ -132,7 +137,7 @@ export default function Navbar() {
               to="/about"
               className="text-green-600 text-lg font-semibold text-nowrap"
             >
-              About Us
+              {t("navbar.menu.aboutUs")}
             </Link>
           </li>
           <li>
@@ -140,12 +145,12 @@ export default function Navbar() {
               to="/contact"
               className="text-green-600 text-lg font-semibold"
             >
-              Contact
+              {t("navbar.menu.contact")}
             </Link>
           </li>
           <li>
             <Link to="/offers" className="text-green-600 text-lg font-semibold">
-              Offers
+              {t("navbar.menu.offers")}
             </Link>
           </li>
           <li>
@@ -153,16 +158,47 @@ export default function Navbar() {
               to="/locations"
               className="text-green-600 text-lg font-semibold"
             >
-              Locations
+              {t("navbar.menu.locations")}
             </Link>
+          </li>
+          <li className="flex items-center">
+            <DropdownMenu dir={i18n.language === "ar" ? "rtl" : "ltr"}>
+              <DropdownMenuTrigger>
+                <Globe color="#16a34a" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>
+                  {t("navbar.menu.selectLang")}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    i18n.changeLanguage("en");
+                    document.body.setAttribute("dir", "ltr");
+                  }}
+                  dir="ltr"
+                >
+                  English
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    i18n.changeLanguage("ar");
+                    document.body.setAttribute("dir", "rtl");
+                  }}
+                  dir="rtl"
+                >
+                  العربية
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </li>
         </ul>
       </div>
 
       {/* Account section */}
       {isAuthenticated ? (
-        <div className="col-span-4 flex justify-end px-8">
-          <DropdownMenu>
+        <div className="col-span-2 flex justify-end px-8">
+          <DropdownMenu dir={i18n.language === "ar" ? "rtl" : "ltr"}>
             <DropdownMenuTrigger>
               <Avatar>
                 <AvatarFallback className="bg-green-600 text-white">
@@ -171,37 +207,37 @@ export default function Navbar() {
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{t("navbar.account.title")}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate("/profile")}>
-                Profile
+                {t("navbar.account.profile")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate("/cart")}>
-                Cart
+                {t("navbar.account.cart")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate("/order-history")}>
-                Order history
+                {t("navbar.account.orderHistory")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate("/favorites")}>
-                Favorites
+                {t("navbar.account.favorites")}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => dispatch(logout())}>
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
+                <span>{t("navbar.account.logout")}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       ) : (
-        <div className="md:flex md:flex-col lg:flex-row md:items-end gap-4 col-span-4 justify-end hidden items-center">
+        <div className="lg:flex lg:flex-col xl:flex-row lg:items-end gap-4 col-span-2 justify-end hidden items-center">
           <Link to={"/login"}>
             <Button
               variant={"outline"}
               size={"lg"}
               className="text-green-600 text-lg font-semibold"
             >
-              Login
+              {t("navbar.auth.login")}
             </Button>
           </Link>
           <Link to={"/register"}>
@@ -210,7 +246,7 @@ export default function Navbar() {
               size={"lg"}
               className="bg-green-600 text-lg font-semibold"
             >
-              Register
+              {t("navbar.auth.register")}
             </Button>
           </Link>
         </div>

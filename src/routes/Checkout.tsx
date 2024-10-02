@@ -13,6 +13,7 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { clearCart } from "@/features/cart/cartSlice";
+import { useTranslation } from "react-i18next";
 
 export default function Checkout() {
   const [error, setError] = useState<boolean>(false);
@@ -24,6 +25,7 @@ export default function Checkout() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const dispatch = useDispatch();
+  const [t] = useTranslation();
 
   const placeOrder = async () => {
     const response = await placeUserOrder(cart);
@@ -32,16 +34,16 @@ export default function Checkout() {
       dispatch(clearCart());
       navigate("/");
       toast({
-        title: "Order Placed!",
-        description: "Arriving in 60 minutes!",
+        title: t('checkout.success.title'),
+        description: t('checkout.success.description'),
       });
     } else {
       setError(true);
       setTimeout(() => {
         navigate("/")
         toast({
-          title: "Order Not Placed",
-          description: "Please try agian",
+          title: t('checkout.fail.title'),
+          description: t('checkout.fail.description'),
         })
       }, 1000);
     }
@@ -65,11 +67,11 @@ export default function Checkout() {
       <div className="max-w-3xl w-full divide-y-2 space-y-5">
         {/* Payment options */}
         <div className="space-y-6">
-          <div className="text-3xl font-bold">Pay with</div>
+          <div className="text-3xl font-bold">{t('checkout.payment.title')}</div>
           <RadioGroup defaultValue="cash">
             <div className="flex items-center justify-between">
               <Label htmlFor="card" className="text-lg">
-                Credit card
+                {t('checkout.payment.credit')}
               </Label>
               <RadioGroupItem
                 value="card"
@@ -79,7 +81,7 @@ export default function Checkout() {
             </div>
             <div className="flex items-center justify-between">
               <Label htmlFor="cash" className="text-lg">
-                Cash
+              {t('checkout.payment.cash')}
               </Label>
               <RadioGroupItem
                 value="cash"
@@ -92,31 +94,31 @@ export default function Checkout() {
 
         {/* Promo code */}
         <div className="py-4 space-y-6">
-          <h1 className="text-3xl font-bold">Save on your order</h1>
+          <h1 className="text-3xl font-bold">{t('checkout.promo.description')}</h1>
           <div className="grid w-full items-center gap-3">
-            <Label htmlFor="promo">Promo code</Label>
+            <Label htmlFor="promo">{t('checkout.promo.title')}</Label>
             <Input type="text" id="promo" placeholder="Enter promo code" />
           </div>
         </div>
 
         {/* Payment summary */}
         <div className="py-4 space-y-6">
-          <h1 className="text-3xl font-bold">Payment Summary</h1>
+          <h1 className="text-3xl font-bold">{t('checkout.summary.title')}</h1>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span>Subtotal</span>
+              <span>{t('checkout.summary.subtotal')}</span>
               <span>{subtotal}</span>
             </div>
             <div className="flex justify-between">
-              <span>Delivery Fee</span>
+              <span>{t('checkout.summary.delivery')}</span>
               <span>{15}</span>
             </div>
             <div className="flex justify-between">
-              <span>Service Fee</span>
+              <span>{t('checkout.summary.tax')}</span>
               <span>{(subtotal * 0.14).toFixed(2)}</span>
             </div>
             <div className="flex justify-between font-semibold text-lg">
-              <span>Total Amount</span>
+              <span>{t('checkout.summary.total')}</span>
               <span>{(subtotal * 1.14 + 15).toFixed(2)}</span>
             </div>
           </div>
@@ -125,7 +127,7 @@ export default function Checkout() {
         {/* Submit button */}
         <div>
           <Button className="bg-green-600 w-full" onClick={placeOrder}>
-            Place Order
+          {t('checkout.submit')}
           </Button>
         </div>
       </div>

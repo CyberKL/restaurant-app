@@ -97,7 +97,7 @@ export default function PaginatioinSection(props: PaginationSectionProps) {
   }, [activeCategory, options]);
 
   return (
-    <Pagination>
+    <Pagination dir="ltr">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
@@ -105,6 +105,8 @@ export default function PaginatioinSection(props: PaginationSectionProps) {
               totalPages === 0 ? "hidden" : ""
             }`}
             onClick={handlePrevPage}
+            onKeyDown={(e) => e.key === 'Enter' && handlePrevPage()}
+            tabIndex={0}
           />
         </PaginationItem>
         {pages.map((page, index) => (
@@ -112,6 +114,8 @@ export default function PaginatioinSection(props: PaginationSectionProps) {
             <PaginationLink
               isActive={currentPage === page}
               onClick={() => dispatch(setCurrentPage(page))}
+              onKeyDown={(e) => e.key === 'Enter' && dispatch(setCurrentPage(page))}
+              tabIndex={0}
             >
               {page}
             </PaginationLink>
@@ -128,6 +132,8 @@ export default function PaginatioinSection(props: PaginationSectionProps) {
             <PaginationLink
               isActive={currentPage === totalPages}
               onClick={() => dispatch(setCurrentPage(totalPages))}
+              onKeyDown={(e) => e.key === 'Enter' && dispatch(setCurrentPage(totalPages))}
+              tabIndex={0}
             >
               {totalPages}
             </PaginationLink>
@@ -140,6 +146,8 @@ export default function PaginatioinSection(props: PaginationSectionProps) {
               totalPages === 0 ? "hidden" : ""
             }`}
             onClick={handleNextPage}
+            onKeyDown={(e) => e.key === 'Enter' && handleNextPage()}
+            tabIndex={0}
           />
         </PaginationItem>
       </PaginationContent>

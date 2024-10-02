@@ -1,49 +1,51 @@
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
+  const [t] = useTranslation()
   return (
     <footer className="bg-green-600 py-10 px-20 snap-start mt-20 text-white space-y-10">
       <div className="grid grid-cols-12">
         <div className="grid grid-cols-12 col-span-9">
           <ul className="sm:col-span-3 col-span-full">
             <li>
-              <Link to="/about">About Us</Link>
+              <Link to="/about">{t('footer.aboutUs')}</Link>
             </li>
             <li>
-              <Link to="/menu">Menu</Link>
+              <Link to="/menu">{t('footer.menu')}</Link>
             </li>
             <li>
-              <Link to="/nutrition">Nutrition Info</Link>
+              <Link to="/nutrition">{t('footer.nutritionInfo')}</Link>
             </li>
             <li>
-              <Link to="/specials">Specials</Link>
+              <Link to="/specials">{t('footer.specials')}</Link>
             </li>
             <li>
-              <Link to="/contact">Contact Us</Link>
+              <Link to="/contact">{t('footer.contactUs')}</Link>
             </li>
           </ul>
           <ul className="sm:col-span-3 col-span-full">
             <li>
-              <Link to="/careers">Careers</Link>
+              <Link to="/careers">{t('footer.careers')}</Link>
             </li>
             <li>
-              <Link to="/events">Events</Link>
+              <Link to="/events">{t('footer.events')}</Link>
             </li>
             <li>
-              <Link to="/blog">Blog</Link>
+              <Link to="/blog">{t('footer.blog')}</Link>
             </li>
             <li>
-              <Link to="/faq">FAQ</Link>
+              <Link to="/faq">{t('footer.faq')}</Link>
             </li>
             <li>
-              <Link to="/privacy-policy">Privacy Policy</Link>
+              <Link to="/privacy-policy">{t('footer.privacyPolicy')}</Link>
             </li>
             <li>
-              <Link to="/terms-of-service">Terms of Service</Link>
+              <Link to="/terms-of-service">{t('footer.termsOfService')}</Link>
             </li>
           </ul>
         </div>
-        <div className="col-span-3 grid grid-cols-12 justify-items-end">
+        <div className="col-span-3 grid grid-cols-12 justify-items-end" dir="ltr">
           <Link to={""} className="size-10 sm:col-span-4 col-span-full">
             <svg
               role="img"
@@ -79,7 +81,7 @@ export default function Footer() {
           </Link>
         </div>
       </div>
-      <div className="text-center">© 2024 GreenBite. All rights reserved.</div>
+      <div className="text-center" dir="ltr">© 2024 GreenBite. All rights reserved.</div>
     </footer>
   );
 }

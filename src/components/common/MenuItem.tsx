@@ -10,6 +10,7 @@ import { Rating } from "react-simple-star-rating";
 import { handleFavorites } from "@/features/auth/authSlice";
 import { editFavorites } from "@/api/api";
 import FoodItem from "@/types/foodItem";
+import { useTranslation } from "react-i18next";
 
 interface MenuItemProps extends CartFoodItem {}
 
@@ -25,6 +26,7 @@ export default function MenuItem(props: MenuItemProps) {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [t, i18n] = useTranslation()
 
   const increment = (): void => {
     if (isAuthenticated) {
@@ -67,7 +69,7 @@ export default function MenuItem(props: MenuItemProps) {
   }
 
   return (
-    <div className="grid grid-cols-12 max-w-lg py-4">
+    <div className="grid grid-cols-12 max-w-lg py-4" onLoad={() => setIsFavorite(!!favorites.find((i) => i.id === props.id))}>
       <div className="col-span-9 space-y-3">
         <div className="px-2 space-y-1">
           <h1 className="text-2xl">{props.title}</h1>
@@ -78,8 +80,10 @@ export default function MenuItem(props: MenuItemProps) {
             SVGclassName="inline-block"
             size={20}
             fillColor="#16a34a"
+            rtl={i18n.language === 'ar'}
+            allowFraction
           />
-          <p>EGP {props.price}</p>
+          <p>{t('currency')} {props.price}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -111,7 +115,7 @@ export default function MenuItem(props: MenuItemProps) {
             <CirclePlus color="#16a34a" />
           </Button>
           <Link to={`/item/${props.id}`}>
-            <Button size={"sm"}>View item</Button>
+            <Button size={"sm"}>{t('menuItem.view')}</Button>
           </Link>
           <Button
             variant={"ghost"}
@@ -123,7 +127,7 @@ export default function MenuItem(props: MenuItemProps) {
         </div>
       </div>
       <div className="place-content-center col-span-3">
-        <img src={props.image} alt="image" className="size-32" />
+        <img src={props.image} alt={`Photo of ${props.title}`} className="size-32" />
       </div>
     </div>
   );

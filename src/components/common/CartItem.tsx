@@ -6,6 +6,7 @@ import { RootState } from "@/app/store";
 import { useNavigate } from "react-router-dom";
 import CartFoodItem from "@/types/cartFoodItem";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface CartItemProps extends CartFoodItem {}
 
@@ -17,6 +18,7 @@ export default function CartItem(props: CartItemProps) {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [t] = useTranslation();
 
   const increment = (): void => {
     if (isAuthenticated) {
@@ -92,7 +94,7 @@ export default function CartItem(props: CartItemProps) {
           </Button>
         </div>
         <p className="text-center font-semibold">
-          EGP {props.quantity * props.price}
+          {t('currency')} {props.quantity * props.price}
         </p>
       </div>
     </div>

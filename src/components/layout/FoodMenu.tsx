@@ -29,7 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import PaginatioinSection from "../common/PaginatioinSection";
+import PaginationSection from "../common/PaginationSection";
 import {
   resetFilterSort,
   setActiveCategory,
@@ -43,6 +43,8 @@ import {
   setSelectedCuisines,
   setSort,
 } from "@/features/foodMenu/foodMenuSlice";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 
 export default function FoodMenu() {
   const [menuItems, setMenuItems] = useState<FoodItem[]>([]);
@@ -70,6 +72,7 @@ export default function FoodMenu() {
   const rating = useSelector((state: RootState) => state.foodMenu.rating);
 
   const dispatch = useDispatch();
+  const [t, i18n] = useTranslation();
 
   const itemsPerPage: number = 3;
   const endIndex = currentPage * itemsPerPage;
@@ -177,7 +180,7 @@ export default function FoodMenu() {
     console.log(filteredItems)
     if (rating) {
       filteredItems = filteredItems.filter(
-        (item) => Math.floor(item.rating) === rating
+        (item) => item.rating >= rating
       );
     }
     console.log(filteredItems)
@@ -220,30 +223,39 @@ export default function FoodMenu() {
   }, [options]);
 
   return error ? (
-    <div>Couldn't fetch menu items</div>
+    <div role="alert" aria-live="assertive">
+      {t('foodMenu.loadError')}
+    </div>
   ) : (
     <div className="space-y-8 py-10 snap-start">
-      <h1 className="text-center text-3xl text-green-700">Menu</h1>
-
+      <h1 className="text-center text-3xl text-green-700" tabIndex={-1}>
+        {t('foodMenu.title')}
+      </h1>
+  
       {loading ? (
         <div className="grid place-items-center gap-5 divide-y-2 w-full sm:px-0 px-6">
-          <MenuItemSkeleton />
-          <MenuItemSkeleton />
-          <MenuItemSkeleton />
+          <MenuItemSkeleton aria-label="Loading menu item" />
+          <MenuItemSkeleton aria-label="Loading menu item" />
+          <MenuItemSkeleton aria-label="Loading menu item" />
         </div>
       ) : (
         <div className="grid place-items-center h-screen">
           {isSearching ? (
-            <div className="flex w-full max-w-lg items-center space-x-2 px-2">
+            <div className="flex w-full max-w-lg items-center gap-2 px-2">
+              <label htmlFor="search" className="sr-only">
+                Search
+              </label>
               <Input
+                id="search"
                 type="text"
-                placeholder="Search"
+                placeholder={t('foodMenu.search')}
                 onChange={handleSearchChange}
                 autoFocus
               />
               <Button
                 variant={"ghost"}
                 size={"icon"}
+                aria-label="Close search"
                 onClick={() => {
                   setIsSearching(false);
                   filterSort();
@@ -254,19 +266,24 @@ export default function FoodMenu() {
             </div>
           ) : (
             <div className="grid place-items-center justify-end grid-cols-12 max-w-lg gap-2">
-              <ScrollArea className="w-full max-w-lg col-span-9 whitespace-nowrap">
+              <ScrollArea
+                className="w-full max-w-lg col-span-9 whitespace-nowrap"
+                dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}
+                aria-label="Menu options"
+              >
                 {options.isOptions ? <OptionsSection /> : <CategorySection />}
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
-
+  
               <Button
                 variant={"ghost"}
                 size={"icon"}
+                aria-label="Open search"
                 onClick={() => setIsSearching(true)}
               >
                 <Search />
               </Button>
-
+  
               <FilterSortSection />
             </div>
           )}
@@ -281,6 +298,7 @@ export default function FoodMenu() {
                         cart.find((i) => i.id === item.id)?.quantity || 0
                       }
                       key={index}
+                      aria-labelledby={`menuItem-${index}`}
                     />
                   ))
               : filteredMenuItems
@@ -292,13 +310,16 @@ export default function FoodMenu() {
                         cart.find((i) => i.id === item.id)?.quantity || 0
                       }
                       key={index}
+                      aria-labelledby={`menuItem-${index}`}
                     />
                   ))}
-                  {filteredMenuItems.length === 0 && options.isOptions && (
-                    <p>There is no menu items matching your criteria</p>
-                  )}
+            {filteredMenuItems.length === 0 && options.isOptions && (
+              <p role="alert" aria-live="polite">
+                No items match the filter criteria.
+              </p>
+            )}
           </div>
-          <PaginatioinSection
+          <PaginationSection
             totalItems={
               filteredMenuItems.length === 0 && !options.isOptions
                 ? menuItems.length
@@ -306,35 +327,42 @@ export default function FoodMenu() {
             }
             itemsPerPage={itemsPerPage}
             pageRange={3}
+            aria-label="Pagination"
           />
         </div>
       )}
-
-      {cart.length > 0 ? (
-        <div className="fixed bottom-0 flex justify-center w-full py-5 bg-white border-t border-gray-300">
+  
+      {cart.length > 0 && (
+        <div
+          className="fixed bottom-0 flex justify-center w-full py-5 bg-white border-t border-gray-300"
+          aria-label="Cart actions"
+        >
           <div className="grid grid-cols-2 gap-32 px-5">
             <Link to={"/cart"}>
               <Button
                 variant={"outline"}
                 size={"lg"}
                 className="text-green-600 w-full hover:scale-110 transition"
+                aria-label="View cart"
               >
-                Cart
+                {t('foodMenu.cart')}
               </Button>
             </Link>
             <Link to={"/checkout"}>
               <Button
                 size={"lg"}
                 className="bg-green-600 w-full hover:scale-110 transition"
+                aria-label="Checkout"
               >
-                Checkout
+                {t('foodMenu.checkout')}
               </Button>
             </Link>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
+  
 }
 
 function CategorySection() {
@@ -344,6 +372,7 @@ function CategorySection() {
   );
 
   const dispatch = useDispatch();
+  const [t] = useTranslation();
 
   const handleCategoryClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     dispatch(setActiveCategory(e.currentTarget.id));
@@ -354,80 +383,27 @@ function CategorySection() {
   }, [options]);
 
   return (
-    <div className="flex justify-between w-full text-center space-x-4 p-4">
-      <button
-        id="all"
-        className={`${
-          activeCategory === "all" ? "border-b-4" : "text-gray-400"
-        } border-green-600 flex-1 p-1 min-w-24`}
-        onClick={handleCategoryClick}
-      >
-        All
-      </button>
-      <button
-        id="top"
-        className={`${
-          activeCategory === "top" ? "border-b-4" : "text-gray-400"
-        } border-green-600 flex-1 p-1 min-w-24`}
-        onClick={handleCategoryClick}
-      >
-        Top dishes
-      </button>
-      <button
-        id="offers"
-        className={`${
-          activeCategory === "offers" ? "border-b-4" : "text-gray-400"
-        } border-green-600 flex-1 p-1 min-w-24`}
-        onClick={handleCategoryClick}
-      >
-        Offers
-      </button>
-      <button
-        id="value"
-        className={`${
-          activeCategory === "value" ? "border-b-4" : "text-gray-400"
-        } border-green-600 flex-1 p-1 min-w-24`}
-        onClick={handleCategoryClick}
-      >
-        Value meals
-      </button>
-      <button
-        id="appetizers"
-        className={`${
-          activeCategory === "appetizers" ? "border-b-4" : "text-gray-400"
-        } border-green-600 flex-1 p-1 min-w-24`}
-        onClick={handleCategoryClick}
-      >
-        Appetizers
-      </button>
-      <button
-        id="salads"
-        className={`${
-          activeCategory === "salads" ? "border-b-4" : "text-gray-400"
-        } border-green-600 flex-1 p-1 min-w-24`}
-        onClick={handleCategoryClick}
-      >
-        Salads
-      </button>
-      <button
-        id="main"
-        className={`${
-          activeCategory === "main" ? "border-b-4" : "text-gray-400"
-        } border-green-600 flex-1 p-1 min-w-24`}
-        onClick={handleCategoryClick}
-      >
-        Main dishes
-      </button>
-      <button
-        id="desserts"
-        className={`${
-          activeCategory === "desserts" ? "border-b-4" : "text-gray-400"
-        } border-green-600 flex-1 p-1 min-w-24`}
-        onClick={handleCategoryClick}
-      >
-        Desserts
-      </button>
-    </div>
+    <nav role="navigation" aria-label={t('foodMenu.categories.section')}>
+      <div className="flex justify-between w-full text-center gap-4 p-4">
+        {["all", "top", "offers", "value", "appetizers", "salads", "main", "desserts"].map(
+          (category) => (
+            <button
+              key={category}
+              id={category}
+              className={`${
+                activeCategory === category ? "border-b-4" : "text-gray-400"
+              } border-green-600 flex-1 p-1 min-w-24`}
+              onClick={handleCategoryClick}
+              aria-pressed={activeCategory === category}
+              aria-label={t(`foodMenu.categories.${category}`)}
+              tabIndex={0}
+            >
+              {t(`foodMenu.categories.${category}`)}
+            </button>
+          )
+        )}
+      </div>
+    </nav>
   );
 }
 
@@ -445,6 +421,7 @@ function FilterSortSection() {
   const options = useSelector((state: RootState) => state.foodMenu.options);
 
   const dispatch = useDispatch();
+  const [t] = useTranslation();
 
   const priceRanges = [];
   const rangeCount = 4; // Number of ranges you want to create
@@ -460,48 +437,49 @@ function FilterSortSection() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant={"ghost"} size={"icon"}>
+        <Button variant={"ghost"} size={"icon"} aria-label="Filter options">
           <ListFilter />
         </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent aria-labelledby="filter-title" aria-describedby="filter-description">
         <SheetHeader>
-          <SheetTitle>Options</SheetTitle>
-          <SheetDescription>Sort and Filter menu items</SheetDescription>
+          <SheetTitle id="filter-title">{t('foodMenu.filtering.title')}</SheetTitle>
+          <SheetDescription id="filter-description">{t('foodMenu.filtering.description')}</SheetDescription>
         </SheetHeader>
         <div className="py-4 space-y-8">
           {/* Sort section */}
           <div className="space-y-2">
-            <h1 className="font-bold text-lg">Sort By</h1>
+            <h1 className="font-bold text-lg">{t('foodMenu.filtering.sort.title')}</h1>
             <Select
               value={sort}
               onValueChange={(value) => dispatch(setSort(value))}
+              aria-label="Sort options"
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Sort" />
+              <SelectTrigger aria-haspopup="listbox">
+                <SelectValue placeholder={t('foodMenu.filtering.sort.placeholder')} />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="alphaA">Alphabetically, A-Z</SelectItem>
-                <SelectItem value="alphaD">Alphabetically, Z-A</SelectItem>
-                <SelectItem value="priceH">Price, High to Low</SelectItem>
-                <SelectItem value="priceL">Price, Low to High</SelectItem>
-                <SelectItem value="ratingH">Rating, High to Low</SelectItem>
-                <SelectItem value="ratingL">Rating, Low to High</SelectItem>
+              <SelectContent role="listbox">
+                <SelectItem value="alphaA">{t('foodMenu.filtering.sort.alphaA')}</SelectItem>
+                <SelectItem value="alphaD">{t('foodMenu.filtering.sort.alphaD')}</SelectItem>
+                <SelectItem value="priceH">{t('foodMenu.filtering.sort.priceH')}</SelectItem>
+                <SelectItem value="priceL">{t('foodMenu.filtering.sort.priceL')}</SelectItem>
+                <SelectItem value="ratingH">{t('foodMenu.filtering.sort.ratingH')}</SelectItem>
+                <SelectItem value="ratingL">{t('foodMenu.filtering.sort.ratingL')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
-
+  
           {/* Filter section */}
           <div className="space-y-2">
-            <h1 className="text-lg font-bold">Filter</h1>
+            <h1 className="text-lg font-bold">{t('foodMenu.filtering.filter.title')}</h1>
             <div className="space-y-4">
               {/* Cuisine filter */}
               <div className="space-y-2">
-                <h2 className="font-semibold">Cuisine Type</h2>
+                <h2 className="font-semibold">{t('foodMenu.filtering.filter.cuisine')}</h2>
                 <div className="grid grid-cols-12 place-items-start gap-2">
                   {cuisines.map((cuisine, index) => (
                     <div
-                      className="flex items-center space-x-2 col-span-6"
+                      className="flex items-center gap-2 col-span-6"
                       key={index}
                     >
                       <Checkbox
@@ -509,22 +487,21 @@ function FilterSortSection() {
                         checked={selectedCuisines.includes(cuisine)}
                         onCheckedChange={(checked) => {
                           checked
-                            ? dispatch(
-                                setSelectedCuisines([
-                                  ...selectedCuisines,
-                                  cuisine,
-                                ])
-                              )
-                            : dispatch(
-                                setSelectedCuisines(
-                                  selectedCuisines.filter(
-                                    (item) => item !== cuisine
-                                  )
-                                )
-                              );
+                            ? dispatch(setSelectedCuisines([...selectedCuisines, cuisine]))
+                            : dispatch(setSelectedCuisines(selectedCuisines.filter(item => item !== cuisine)));
+                        }}
+                        aria-labelledby={`label-${cuisine}`}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter') {
+                            const currentChecked = selectedCuisines.includes(cuisine);
+                            currentChecked
+                              ? dispatch(setSelectedCuisines(selectedCuisines.filter((item) => item !== cuisine)))
+                              : dispatch(setSelectedCuisines([...selectedCuisines, cuisine]));
+                          }
                         }}
                       />
                       <label
+                        id={`label-${cuisine}`}
                         htmlFor={cuisine}
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
@@ -534,14 +511,15 @@ function FilterSortSection() {
                   ))}
                 </div>
               </div>
-
+  
               {/* Price filter */}
               <div className="space-y-2">
-                <h2 className="font-semibold">Price range</h2>
+                <h2 className="font-semibold">{t('foodMenu.filtering.filter.price')}</h2>
                 <ToggleGroup
                   type="single"
                   value={JSON.stringify(price)}
                   onValueChange={(value) => dispatch(setPrice(value))}
+                  aria-label="Price range filter"
                 >
                   <div className="grid grid-cols-12 gap-2">
                     {priceRanges.map((range, index) => (
@@ -551,6 +529,8 @@ function FilterSortSection() {
                         variant={"outline"}
                         size={"sm"}
                         key={index}
+                        role="button"
+                        aria-pressed={JSON.stringify(price) === JSON.stringify(range)}
                       >
                         {range.min} - {range.max}
                       </ToggleGroupItem>
@@ -558,30 +538,35 @@ function FilterSortSection() {
                   </div>
                 </ToggleGroup>
               </div>
-
+  
               {/* Rating filter */}
               <div className="space-y-2">
-                <h2 className="font-semibold">Rating</h2>
-                <div className="">
+                <h2 className="font-semibold">{t('foodMenu.filtering.filter.rating')}</h2>
+                <div>
                   <Rating
                     onClick={(value) => dispatch(setRating(value))}
                     initialValue={rating}
                     SVGclassName={"inline-block"}
                     fillColor="green"
                     size={30}
+                    rtl={i18n.language === 'ar'}
+                    allowFraction
+                    aria-label="Rating filter"
+                    aria-live="polite"
                   />
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <SheetFooter className="space-x-5">
+        <SheetFooter className="gap-5">
           <SheetClose asChild>
             <Button
               variant={"outline"}
               onClick={() => dispatch(resetFilterSort())}
+              aria-label="Reset filters"
             >
-              Reset
+              {t('foodMenu.reset')}
             </Button>
           </SheetClose>
           <SheetClose asChild>
@@ -598,14 +583,16 @@ function FilterSortSection() {
                   })
                 )
               }
+              aria-label="Apply filters"
             >
-              Confirm
+              {t('foodMenu.confirm')}
             </Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>
   );
+  
 }
 
 function OptionsSection() {
@@ -619,16 +606,18 @@ function OptionsSection() {
     ratingH: string;
     ratingL: string;
   }
-  const sorts: Sorts = {
-    alphaA: "Alphabetically, A-Z",
-    alphaD: "Alphabetically, Z-A",
-    priceH: "Price, High to Low",
-    priceL: "Price, Low to High",
-    ratingH: "Rating, High to Low",
-    ratingL: "Rating, Low to High",
-  };
-
+  
   const dispatch = useDispatch();
+  const [t] = useTranslation();
+  
+  const sorts: Sorts = {
+    alphaA: t('foodMenu.filtering.sort.alphaA'),
+    alphaD: t('foodMenu.filtering.sort.alphaD'),
+    priceH: t('foodMenu.filtering.sort.priceH'),
+    priceL: t('foodMenu.filtering.sort.priceL'),
+    ratingH: t('foodMenu.filtering.sort.ratingH'),
+    ratingL: t('foodMenu.filtering.sort.ratingL'),
+  };
 
   return (
     <div className="flex space-x-4 p-4 divide-x-2">
@@ -636,6 +625,7 @@ function OptionsSection() {
         <div className="flex justify-between gap-2 border border-gray-300 p-2 rounded-md">
           <p className="text-sm">{sorts[options.sort as keyof Sorts]}</p>
           <button
+            aria-label="Clear sort" // Accessible label
             onClick={() => {
               dispatch(
                 setOptions({
@@ -654,9 +644,10 @@ function OptionsSection() {
         <div className="pl-4">
           <div className="flex justify-between gap-2 border border-gray-300 rounded-md p-2">
             <p className="text-sm">
-              Price: {options.price.min} - {options.price.max}
+              {t('foodMenu.options.price')}: {options.price.min} - {options.price.max}
             </p>
             <button
+              aria-label={t('foodMenu.options.clearPrice')} // Accessible label
               onClick={() => {
                 dispatch(
                   setOptions({
@@ -675,8 +666,11 @@ function OptionsSection() {
       {options.rating ? (
         <div className="pl-4">
           <div className="flex justify-between gap-2 border border-gray-300 p-2 rounded-md">
-            <p className="text-sm">Rating: {options.rating}</p>
+            <p className="text-sm">
+              {t('foodMenu.options.rating')}: {options.rating}
+            </p>
             <button
+              aria-label="Clear rating" // Accessible label
               onClick={() => {
                 dispatch(
                   setOptions({
@@ -701,19 +695,18 @@ function OptionsSection() {
               >
                 <p className="text-sm">{item}</p>
                 <button
+                  aria-label={`Clear cuisine: ${item}`} // Accessible label
                   onClick={() => {
                     const newCuisines = options.cuisines.filter(
                       (cuisine) => cuisine !== item
                     );
-                    
-                      dispatch(
-                        setOptions({
-                          ...options,
-                          cuisines: newCuisines,
-                        })
-                      );
-                      dispatch(setSelectedCuisines(newCuisines));
-                    
+                    dispatch(
+                      setOptions({
+                        ...options,
+                        cuisines: newCuisines,
+                      })
+                    );
+                    dispatch(setSelectedCuisines(newCuisines));
                   }}
                 >
                   <X size={15} />
@@ -723,5 +716,5 @@ function OptionsSection() {
           : null}
       </div>
     </div>
-  );
+  );  
 }
