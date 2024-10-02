@@ -19,7 +19,7 @@ export default function Favorites() {
             <p>{t('favorites.empty')}</p>
           </div>
         ) : (
-          <ScrollArea className="h-screen p-5" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
+          <ScrollArea className="h-screen p-5" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'} aria-label="Favorites list">
             <div className="divide-y-2">
               {favorites.map((item, index) => (
                 <MenuItem

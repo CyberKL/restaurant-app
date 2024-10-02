@@ -84,13 +84,9 @@ export default function FoodMenu() {
       try {
         setLoading(true);
         const response = await fetch("/menu.json");
-        const data = await response.json();
+        const data: FoodItem[] = await response.json();        
         setMenuItems(data);
 
-        const uniqueCuisines = [
-          ...new Set(data.map((item: FoodItem) => item.cuisine)),
-        ];
-        dispatch(setCuisines(uniqueCuisines as string[]));
         const prices = data.map((item: FoodItem) => item.price); // Extract prices from the dataset
         const minPrice = Math.min(...prices); // Find the minimum price
         const maxPrice = Math.max(...prices); // Find the maximum price
@@ -111,7 +107,24 @@ export default function FoodMenu() {
     fetchMenuItems();
   }, []);
 
+  // Localize the menu
   useEffect(() => {
+    const translatedItems = menuItems.map((item) => ({
+      ...item, // Copy existing properties
+      cuisine: t(item.cuisine), // Translate and overwrite the cuisine
+    }));
+
+    // Get the localized cuisines
+    const uniqueCuisines = [
+      ...new Set(menuItems.map((item: FoodItem) => t(item.cuisine))),
+    ];
+    dispatch(setCuisines(uniqueCuisines as string[]));
+
+    dispatch(setFilteredMenuItems(translatedItems))
+  }, [loading, i18n.language])
+
+  useEffect(() => {
+    console.log(activeCategory)
     if (activeCategory === "all") {
       dispatch(setFilteredMenuItems(menuItems));
     } else if (activeCategory === "top" || activeCategory === "value" || activeCategory === "offers") {
@@ -119,7 +132,7 @@ export default function FoodMenu() {
         setFilteredMenuItems(
           menuItems.filter(
             (item) =>
-              item.subcategory.toLowerCase() === activeCategory.toLowerCase()
+              t(item.subcategory).toLowerCase() === activeCategory.toLowerCase()
           )
         )
       );
@@ -128,7 +141,7 @@ export default function FoodMenu() {
         setFilteredMenuItems(
           menuItems.filter(
             (item) =>
-              item.category.toLowerCase() === activeCategory.toLowerCase()
+              t(item.category).toLowerCase() === activeCategory.toLowerCase()
           )
         )
       );
@@ -154,8 +167,8 @@ export default function FoodMenu() {
       setFilteredMenuItems(
         items.filter(
           (item) =>
-            item.title.toLowerCase().includes(search) ||
-            item.description.toLowerCase().includes(search)
+            t(item.title).toLowerCase().includes(search) ||
+            t(item.description).toLowerCase().includes(search)
         )
       )
     );
@@ -413,6 +426,9 @@ function FilterSortSection() {
   );
   const sort = useSelector((state: RootState) => state.foodMenu.sort);
   const cuisines = useSelector((state: RootState) => state.foodMenu.cuisines);
+  // useEffect(() => {
+  //   console.log(cuisines)
+  // }, [cuisines])
   const price = useSelector((state: RootState) => state.foodMenu.price);
   const rating = useSelector((state: RootState) => state.foodMenu.rating);
   const selectedCuisines = useSelector(

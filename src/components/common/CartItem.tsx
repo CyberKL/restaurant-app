@@ -20,45 +20,58 @@ export default function CartItem(props: CartItemProps) {
   const navigate = useNavigate();
   const [t] = useTranslation();
 
+  // Handle incrementing the item quantity
   const increment = (): void => {
     if (isAuthenticated) {
       dispatch(addItem(props));
       setAction("increment");
     } else {
-      navigate("/login");
+      navigate("/login"); // Redirect to login if not authenticated
     }
   };
 
+  // Handle decrementing the item quantity
   const decrement = (): void => {
     if (isAuthenticated) {
       dispatch(removeItem(props.id));
       setAction("decrement");
     } else {
-      navigate("/login");
+      navigate("/login"); // Redirect to login if not authenticated
     }
   };
 
+  // Handle clearing the item from the cart
   const clear = (): void => {
     if (isAuthenticated) {
       dispatch(clearItem(props.id));
     } else {
-      navigate("/login");
+      navigate("/login"); // Redirect to login if not authenticated
     }
   };
 
   return (
-    <div className="grid grid-cols-12 max-w-lg sm:gap-8 gap-2 py-4">
-      <img src={props.image} alt="image" className="col-span-2" />
+    <div className="grid grid-cols-12 max-w-lg sm:gap-8 gap-2 py-4" role="listitem">
+      <img 
+        src={props.image} 
+        alt={props.title} // Improved alt text for better accessibility
+        className="col-span-2" 
+        loading="lazy" // Optimizes loading for performance
+      />
       <div className="sm:col-span-8 col-span-6 space-y-2">
         <div>
-          <h1 className="sm:text-2xl text-lg">{props.title}</h1>
+          <h1 className="sm:text-2xl text-lg">{t(props.title)}</h1>
           <p className="sm:text-sm text-xs text-gray-600">
-            {props.description}
+            {t(props.description)}
           </p>
         </div>
       </div>
       <div className="sm:col-span-2 col-span-4 flex justify-center items-end">
-        <Button variant={"ghost"} size={"icon"} onClick={clear}>
+        <Button 
+          variant={"ghost"} 
+          size={"icon"} 
+          onClick={clear} 
+          aria-label={`Remove ${props.title} from cart`} // Adds aria-label for accessibility
+        >
           <Trash2 color="#dc2626" />
         </Button>
       </div>
@@ -69,6 +82,7 @@ export default function CartItem(props: CartItemProps) {
             size={"icon"}
             onClick={decrement}
             className="active:scale-105"
+            aria-label={`Decrease quantity of ${props.title}`} // Adds aria-label for accessibility
           >
             <CircleMinus color="#16a34a" />
           </Button>
@@ -81,6 +95,7 @@ export default function CartItem(props: CartItemProps) {
                 : ""
             }`}
             key={props.quantity}
+            role="text" // Role for screen readers
           >
             {props.quantity}
           </span>
@@ -89,11 +104,12 @@ export default function CartItem(props: CartItemProps) {
             size={"icon"}
             onClick={increment}
             className="active:scale-105"
+            aria-label={`Increase quantity of ${props.title}`} // Adds aria-label for accessibility
           >
             <CirclePlus color="#16a34a" />
           </Button>
         </div>
-        <p className="text-center font-semibold">
+        <p className="text-center font-semibold" aria-live="polite"> {/* Aria live region for dynamic content updates */}
           {t('currency')} {props.quantity * props.price}
         </p>
       </div>

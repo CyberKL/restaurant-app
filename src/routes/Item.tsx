@@ -67,7 +67,7 @@ export default function Item() {
       setItem(foodItem);
     };
     fetchItem();
-  }, []);
+  }, [params.id]); // Added params.id as dependency
 
   // Check if the item is currently favorited
   useEffect(() => {
@@ -76,42 +76,47 @@ export default function Item() {
     }
   }, [favorites, item]);
 
+  // Handle favorites click event
   const handleFavoritesClick = async () => {
-    if (isAuthenticated && item)
-    {
-      const mode = isFavorite ? "remove" : "add"
+    if (isAuthenticated && item) {
+      const mode = isFavorite ? "remove" : "add";
       const response = await editFavorites(item, mode);
-      if (response && response.ok) dispatch(handleFavorites(item))
-      else console.error("Server Error: Item not favorited")
-
+      if (response && response.ok) {
+        dispatch(handleFavorites(item));
+      } else {
+        console.error("Server Error: Item not favorited");
+      }
+    } else {
+      navigate("/login");
     }
-    else navigate("/login")
-  }
+  };
 
   if (item)
     return (
       <>
         <Navbar />
 
-        <main className="flex flex-col items-center">
+        <main className="flex flex-col items-center  pt-20" aria-labelledby="item-title">
           <div className="space-y-60">
             <div className="max-w-3xl space-y-4">
               <img
                 src={item?.image}
-                alt="food item image"
+                alt={item?.title + " image"} // descriptive alt text
                 className="h-72 w-full border-b border-gray-300"
+                loading="lazy" // Lazy load images for performance
               />
 
               <div className="grid grid-cols-12">
                 <div className="space-y-2 col-span-9">
-                  <h1 className="text-3xl">{item?.title}</h1>
-                  <p className="text-gray-600">{item?.description}</p>
+                  <h1 id="item-title" className="text-3xl">{t(item?.title)}</h1>
+                  <p className="text-gray-600">{t(item?.description)}</p>
                 </div>
                 <div className="col-span-3 flex items-center justify-end gap-2">
                   <Button
                     variant={"ghost"}
                     size={"icon"}
                     onClick={decrement}
+                    aria-label={t('item.decrement')} // aria-label for accessibility
                     className="active:scale-105"
                   >
                     <CircleMinus color="#16a34a" />
@@ -125,6 +130,7 @@ export default function Item() {
                         : ""
                     }`}
                     key={quantity}
+                    role="status" // Indicates that this element contains live region updates
                   >
                     {quantity}
                   </span>
@@ -132,6 +138,7 @@ export default function Item() {
                     variant={"ghost"}
                     size={"icon"}
                     onClick={increment}
+                    aria-label={t('item.increment')} // aria-label for accessibility
                     className="active:scale-105"
                   >
                     <CirclePlus color="#16a34a" />
@@ -144,6 +151,7 @@ export default function Item() {
                     variant={"ghost"}
                     size={"icon"}
                     onClick={handleFavoritesClick}
+                    aria-label={isFavorite ? t('item.removeFavorite') : t('item.addFavorite')} // aria-label for accessibility
                   >
                     <Star
                       stroke="#16a34a"

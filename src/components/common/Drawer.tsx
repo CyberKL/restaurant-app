@@ -21,11 +21,9 @@ interface DrawerProps {
 
 export default function Drawer({ open = false }: DrawerProps) {
   const location = useLocation();
-
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
-
   const dispatch = useDispatch();
   const [t, i18n] = useTranslation();
 
@@ -35,6 +33,8 @@ export default function Drawer({ open = false }: DrawerProps) {
         open ? "block" : "hidden"
       } fixed inset-x-0 inset-y-20 h-full flex flex-col justify-between py-24 bg-white`}
       id="drawer"
+      role="navigation"  // Role for better accessibility
+      aria-label="Main navigation"  // Descriptive label for screen readers
     >
       <div className="px-5">
         <ul className="space-y-5 text-2xl">
@@ -51,6 +51,7 @@ export default function Drawer({ open = false }: DrawerProps) {
                 duration={200}
                 onClick={() => dispatch(closeDrawer())}
                 className="text-green-600 text-lg font-semibold cursor-pointer"
+                aria-label={t("navbar.menu.menu")}
               >
                 {t("navbar.menu.menu")}
               </Scroll>
@@ -60,6 +61,7 @@ export default function Drawer({ open = false }: DrawerProps) {
                 className="text-green-600 text-lg font-semibold"
                 onClick={() => dispatch(closeDrawer())}
                 state={{ scrollToMenu: true }}
+                aria-label={t("navbar.menu.menu")}
               >
                 {t("navbar.menu.menu")}
               </Link>
@@ -69,6 +71,7 @@ export default function Drawer({ open = false }: DrawerProps) {
             <Link
               to="/about"
               className="text-green-600 text-lg font-semibold text-nowrap"
+              aria-label={t("navbar.menu.aboutUs")}
             >
               {t("navbar.menu.aboutUs")}
             </Link>
@@ -77,12 +80,17 @@ export default function Drawer({ open = false }: DrawerProps) {
             <Link
               to="/contact"
               className="text-green-600 text-lg font-semibold"
+              aria-label={t("navbar.menu.contact")}
             >
               {t("navbar.menu.contact")}
             </Link>
           </li>
           <li>
-            <Link to="/offers" className="text-green-600 text-lg font-semibold">
+            <Link
+              to="/offers"
+              className="text-green-600 text-lg font-semibold"
+              aria-label={t("navbar.menu.offers")}
+            >
               {t("navbar.menu.offers")}
             </Link>
           </li>
@@ -90,13 +98,16 @@ export default function Drawer({ open = false }: DrawerProps) {
             <Link
               to="/locations"
               className="text-green-600 text-lg font-semibold"
+              aria-label={t("navbar.menu.locations")}
             >
               {t("navbar.menu.locations")}
             </Link>
           </li>
           <li>
             <DropdownMenu dir={i18n.language === "ar" ? "rtl" : "ltr"}>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger
+                aria-label={t("navbar.menu.selectLang")}
+              >
                 <Globe color="#16a34a" />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
@@ -110,6 +121,7 @@ export default function Drawer({ open = false }: DrawerProps) {
                     document.body.setAttribute("dir", "ltr");
                   }}
                   dir="ltr"
+                  aria-label="Switch to English"
                 >
                   English
                 </DropdownMenuItem>
@@ -119,6 +131,7 @@ export default function Drawer({ open = false }: DrawerProps) {
                     document.body.setAttribute("dir", "rtl");
                   }}
                   dir="rtl"
+                  aria-label="Switch to Arabic"
                 >
                   العربية
                 </DropdownMenuItem>
@@ -128,7 +141,7 @@ export default function Drawer({ open = false }: DrawerProps) {
         </ul>
       </div>
 
-      {/* Account */}
+      {/* Account section for authentication */}
       {!isAuthenticated && (
         <div className="grid grid-cols-1 justify-center gap-5 px-5">
           <Link to={"/login"}>
@@ -136,6 +149,7 @@ export default function Drawer({ open = false }: DrawerProps) {
               variant={"outline"}
               size={"lg"}
               className="text-green-600 text-lg font-semibold max-w-full w-full"
+              aria-label={t("navbar.auth.login")}
             >
               {t("navbar.auth.login")}
             </Button>
@@ -145,6 +159,7 @@ export default function Drawer({ open = false }: DrawerProps) {
               variant={"default"}
               size={"lg"}
               className="bg-green-600 text-lg font-semibold max-w-full w-full"
+              aria-label={t("navbar.auth.register")}
             >
               {t("navbar.auth.register")}
             </Button>

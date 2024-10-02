@@ -209,5 +209,159 @@
   },
   "item": {
     "reviews": "Reviews"
+  },
+  "menu": {
+    "cuisines": {
+      "american": "American",
+      "mediterranean": "Mediterranean",
+      "italian": "Italian",
+      "middleEastern": "Middle Eastern",
+      "mexican": "Mexican",
+      "greek": "Greek",
+      "asian": "Asian",
+      "vegan": "Vegan",
+      "nordic": "Nordic"
+    },
+    "categories": {
+      "appetizers": "Appetizers",
+      "salads": "Salads",
+      "main": "Main",
+      "desserts": "Desserts"
+    },
+    "subcategories": {
+      "top": "Top",
+      "value": "Value",
+      "offers": "Offers"
+    },
+    "items": {
+      "sweetPotatoFries": {
+        "title": "Sweet Potato Fries",
+        "description": "Baked sweet potato fries seasoned with sea salt."
+      },
+      "hummusVeggiePlatter": {
+        "title": "Hummus & Veggie Platter",
+        "description": "A variety of fresh vegetables served with homemade hummus."
+      },
+      "stuffedMushrooms": {
+        "title": "Stuffed Mushrooms",
+        "description": "Mushrooms stuffed with spinach and cheese."
+      },
+      "avocadoBruschetta": {
+        "title": "Avocado Bruschetta",
+        "description": "Grilled bread topped with avocado, cherry tomatoes, and basil."
+      },
+      "bakedZucchiniSticks": {
+        "title": "Baked Zucchini Sticks",
+        "description": "Crispy baked zucchini sticks served with marinara sauce."
+      },
+      "falafelBalls": {
+        "title": "Falafel Balls",
+        "description": "Crispy falafel served with tahini sauce."
+      },
+      "grilledChickenCaesarSalad": {
+        "title": "Grilled Chicken Caesar Salad",
+        "description": "Crisp romaine lettuce with grilled chicken, parmesan cheese, and a light Caesar dressing."
+      },
+      "quinoaAvocadoSalad": {
+        "title": "Quinoa & Avocado Salad",
+        "description": "Quinoa, avocado, black beans, and cherry tomatoes with lime vinaigrette."
+      },
+      "kaleAppleSalad": {
+        "title": "Kale & Apple Salad",
+        "description": "Fresh kale with crisp apples, walnuts, and a maple vinaigrette dressing."
+      },
+      "greekSalad": {
+        "title": "Greek Salad",
+        "description": "Cucumber, tomatoes, feta cheese, olives, and oregano with olive oil."
+      },
+      "spinachBerrySalad": {
+        "title": "Spinach & Berry Salad",
+        "description": "Fresh spinach with mixed berries, almonds, and a poppy seed dressing."
+      },
+      "chickpeaAvocadoSalad": {
+        "title": "Chickpea & Avocado Salad",
+        "description": "Chickpeas, avocado, and red onion with lemon-tahini dressing."
+      },
+      "citrusArugulaSalad": {
+        "title": "Citrus & Arugula Salad",
+        "description": "Arugula topped with fresh citrus segments and toasted pine nuts."
+      },
+      "warmQuinoaKaleSalad": {
+        "title": "Warm Quinoa & Kale Salad",
+        "description": "Warm quinoa with roasted butternut squash, kale, and cranberries."
+      },
+      "veganSaladSmoothieDeal": {
+        "title": "Vegan Salad & Smoothie Deal",
+        "description": "A fresh garden salad with mixed greens, cherry tomatoes, quinoa, and a lemon-tahini dressing, served with a tropical mango smoothie. Perfect for a light and healthy meal."
+      },
+      "grilledSalmonWithVeggies": {
+        "title": "Grilled Salmon with Veggies",
+        "description": "Grilled salmon fillet with steamed vegetables."
+      },
+      "grilledTofuStirFry": {
+        "title": "Grilled Tofu Stir-Fry",
+        "description": "Stir-fried vegetables with grilled tofu and a savory ginger-soy sauce."
+      },
+      "chickenStirFry": {
+        "title": "Chicken Stir Fry",
+        "description": "Stir-fried chicken with mixed vegetables in soy sauce."
+      },
+      "zucchiniNoodlesWithPesto": {
+        "title": "Zucchini Noodles with Pesto",
+        "description": "Zucchini noodles tossed in fresh basil pesto."
+      },
+      "lentilStew": {
+        "title": "Lentil Stew",
+        "description": "Hearty lentil stew with vegetables."
+      },
+      "turkeyLettuceSandwich": {
+        "title": "Turkey Lettuce Sandwich",
+        "description": "Ground turkey with lettuce wraps and a light sauce sandwich."
+      },
+      "grilledTofuSkewers": {
+        "title": "Grilled Tofu Skewers",
+        "description": "Tofu skewers marinated in herbs, served with grilled veggies."
+      },
+      "eggplantParmesan": {
+        "title": "Eggplant Parmesan",
+        "description": "Baked eggplant layered with marinara sauce and melted cheese."
+      },
+      "beefBroccoliStirFry": {
+        "title": "Beef & Broccoli Stir-Fry",
+        "description": "Tender beef and broccoli stir-fried in soy-ginger sauce."
+      },
+      "burritoBowl": {
+        "title": "Burrito Bowl",
+        "description": "A burrito bowl filled with rice, beans, and veggies, and chicken."
+      },
+      "lambShawarmaPlate": {
+        "title": "Lamb Shawarma Plate",
+        "description": "Tender lamb shawarma with rice and salad."
+      },
+      "chickenWrapCombo": {
+        "title": "Chicken Wrap Combo",
+        "description": "A whole wheat chicken wrap filled with grilled chicken, avocado, lettuce, and a light yogurt sauce. Comes with a side of sweet potato fries and a refreshing drink."
+      },
+      "grilledSalmonPowerPlate": {
+        "title": "Grilled Salmon Power Plate",
+        "description": "A protein-packed meal including grilled salmon, roasted veggies, and brown rice, paired with a detox green juice for a balanced and nutritious offering."
+      },
+      "chiaPudding": {
+        "title": "Chia Pudding",
+        "description": "Chia seeds soaked in almond milk with mixed berries."
+      },
+      "fruitSaladWithHoney": {
+        "title": "Fruit Salad with Honey",
+        "description": "A mix of seasonal fruits drizzled with honey."
+      },
+      "bananaOatCookies": {
+        "title": "Banana Oat Cookies",
+        "description": "Healthy cookies made with oats, banana, and dark chocolate chips."
+      },
+      "avocadoBrownies": {
+        "title": "Avocado Brownies",
+        "description": "Rich brownies made with avocado and dark chocolate."
+      }
+    }
   }
 }

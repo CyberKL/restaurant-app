@@ -29,7 +29,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [t, i18n] = useTranslation();
 
-  const loginSchema = createLoginSchema(t); // The schema is being generated based on the language to return correct errors
+  const loginSchema = createLoginSchema(t); // The schema is generated based on the language to return correct errors
 
   const form = useForm<LoginFormSchema>({
     resolver: yupResolver(loginSchema),
@@ -42,7 +42,7 @@ export default function Login() {
     if (response) {
       if (response === "User not found") {
         setIsInvalidCreds(true);
-      } else { // Successful
+      } else { // Successful login
         dispatch(login(response));
         navigate("/");
       }
@@ -56,9 +56,9 @@ export default function Login() {
 
   return (
     <div className="relative grid grid-cols-12">
-      {/* Back button */}
+      {/* Back button with aria-label for screen readers */}
       <div className={`absolute top-0 p-5 ${i18n.language === 'ar' ? 'right-0' : 'left-0'}`}>
-        <Link to={"/"}>
+        <Link to={"/"} aria-label={t('login.back')}>
           <Button
             variant={"ghost"}
             size={"icon"}
@@ -69,14 +69,15 @@ export default function Login() {
         </Link>
       </div>
 
-      {/* Form */}
+      {/* Form Section */}
       <div className="sm:col-span-6 col-span-full flex flex-col items-center justify-center gap-20 p-10">
-        <h1 className="font-bold text-3xl">{t('login.title')}</h1>
+        <h1 className="font-bold text-3xl" role="heading" aria-level={1}>{t('login.title')}</h1>
         <div className="w-full flex flex-col items-center justify-center space-y-3">
+          {/* Invalid credentials message */}
           <p
-            className={`text-red-500 ${
-              isInvalidCreds ? "visible" : "invisible"
-            }`}
+            className={`text-red-500 ${isInvalidCreds ? "visible" : "invisible"}`}
+            role="alert"
+            aria-live="assertive"
           >
             {t('login.invalid')}
           </p>
@@ -92,7 +93,7 @@ export default function Login() {
                   <FormItem>
                     <FormLabel>{t('login.email')}</FormLabel>
                     <FormControl>
-                      <Input {...field} type="email" />
+                      <Input {...field} type="email" aria-required="true" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -105,7 +106,7 @@ export default function Login() {
                   <FormItem>
                     <FormLabel>{t('login.password')}</FormLabel>
                     <FormControl>
-                      <Input {...field} type="password" />
+                      <Input {...field} type="password" aria-required="true" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -114,6 +115,7 @@ export default function Login() {
               <Button
                 type="submit"
                 className="w-full bg-green-600 col-span-full"
+                aria-label={t('login.submit')}
               >
                 {t('login.submit')}
               </Button>
@@ -121,31 +123,33 @@ export default function Login() {
           </Form>
         </div>
         <p className="text-sm">
-        {t('login.register.text')}{" "}
+          {t('login.register.text')}{" "}
           <Link
             to={"/register"}
             className="text-green-600 underline italic font-semibold"
+            aria-label={t('login.register.link')}
           >
             {t('login.register.link')}
           </Link>
         </p>
       </div>
 
+      {/* Image Section */}
       <div className={`relative sm:flex items-center justify-center sm:col-span-6 col-span-full h-screen bg-[url(@/assets/login.jpg)] bg-cover ${i18n.language === 'ar' ? 'rounded-r-3xl' : 'rounded-l-3xl'} hidden px-10`}>
-        {/* Overlay */}
+        {/* Overlay for better contrast */}
         <div className={`absolute inset-0 bg-black opacity-70 ${i18n.language === 'ar' ? 'rounded-r-3xl' : 'rounded-l-3xl'}`}></div>
 
         {/* Header */}
         <div className="text-center text-white z-10 space-y-4 flex flex-col items-center">
-          <h1 className="text-6xl">{t('login.header')}</h1>
-          <p className=" text-lg max-w-lg">
-          {t('login.subheader')}
+          <h1 className="text-6xl" role="heading" aria-level={2}>{t('login.header')}</h1>
+          <p className="text-lg max-w-lg">
+            {t('login.subheader')}
           </p>
         </div>
       </div>
       {error && (
         <div className="fixed bg-black opacity-80 size-full flex z-40 justify-center items-center px-5">
-          <Alert variant="destructive" className="z-50 sm:max-w-xl">
+          <Alert variant="destructive" className="z-50 sm:max-w-xl" role="alert">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>

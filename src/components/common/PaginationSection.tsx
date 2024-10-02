@@ -100,57 +100,65 @@ export default function PaginatioinSection(props: PaginationSectionProps) {
     <Pagination dir="ltr">
       <PaginationContent>
         <PaginationItem>
+          {/* Previous button, hidden if no pages exist */}
           <PaginationPrevious
-            className={`cursor-pointer ${
-              totalPages === 0 ? "hidden" : ""
-            }`}
-            onClick={handlePrevPage}
-            onKeyDown={(e) => e.key === 'Enter' && handlePrevPage()}
-            tabIndex={0}
+            className={`cursor-pointer ${totalPages === 0 ? "hidden" : ""}`}
+            onClick={handlePrevPage} // Function to go to the previous page
+            onKeyDown={(e) => e.key === 'Enter' && handlePrevPage()} // Handle Enter key for accessibility
+            tabIndex={0} // Ensure it's focusable
+            aria-label="Previous Page" // Accessibility label for the previous button
           />
         </PaginationItem>
+  
+        {/* Render page links dynamically based on pages array */}
         {pages.map((page, index) => (
           <PaginationItem key={index}>
             <PaginationLink
-              isActive={currentPage === page}
-              onClick={() => dispatch(setCurrentPage(page))}
-              onKeyDown={(e) => e.key === 'Enter' && dispatch(setCurrentPage(page))}
-              tabIndex={0}
+              isActive={currentPage === page} // Highlight the active page
+              onClick={() => dispatch(setCurrentPage(page))} // Dispatch action to set current page
+              onKeyDown={(e) => e.key === 'Enter' && dispatch(setCurrentPage(page))} // Handle Enter key for accessibility
+              tabIndex={0} // Ensure it's focusable
+              aria-label={`Go to page ${page}`} // Accessibility label for each page link
             >
               {page}
             </PaginationLink>
           </PaginationItem>
         ))}
-
+  
+        {/* Show ellipsis if there are more than 3 total pages */}
         {totalPages > 3 && (
           <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>
         )}
+  
+        {/* Link to the last page if there are more than 3 total pages */}
         {totalPages > 3 && (
           <PaginationItem>
             <PaginationLink
-              isActive={currentPage === totalPages}
-              onClick={() => dispatch(setCurrentPage(totalPages))}
-              onKeyDown={(e) => e.key === 'Enter' && dispatch(setCurrentPage(totalPages))}
-              tabIndex={0}
+              isActive={currentPage === totalPages} // Highlight the last page if active
+              onClick={() => dispatch(setCurrentPage(totalPages))} // Dispatch action to go to the last page
+              onKeyDown={(e) => e.key === 'Enter' && dispatch(setCurrentPage(totalPages))} // Handle Enter key for accessibility
+              tabIndex={0} // Ensure it's focusable
+              aria-label={`Go to page ${totalPages}`} // Accessibility label for the last page link
             >
               {totalPages}
             </PaginationLink>
           </PaginationItem>
         )}
-
+  
         <PaginationItem>
+          {/* Next button, hidden if no pages exist */}
           <PaginationNext
-            className={`cursor-pointer ${
-              totalPages === 0 ? "hidden" : ""
-            }`}
-            onClick={handleNextPage}
-            onKeyDown={(e) => e.key === 'Enter' && handleNextPage()}
-            tabIndex={0}
+            className={`cursor-pointer ${totalPages === 0 ? "hidden" : ""}`}
+            onClick={handleNextPage} // Function to go to the next page
+            onKeyDown={(e) => e.key === 'Enter' && handleNextPage()} // Handle Enter key for accessibility
+            tabIndex={0} // Ensure it's focusable
+            aria-label="Next Page" // Accessibility label for the next button
           />
         </PaginationItem>
       </PaginationContent>
     </Pagination>
   );
+  
 }

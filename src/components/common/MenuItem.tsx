@@ -69,11 +69,17 @@ export default function MenuItem(props: MenuItemProps) {
   }
 
   return (
-    <div className="grid grid-cols-12 max-w-lg py-4" onLoad={() => setIsFavorite(!!favorites.find((i) => i.id === props.id))}>
+    <div
+      className="grid grid-cols-12 max-w-lg py-4"
+      onLoad={() => setIsFavorite(!!favorites.find((i) => i.id === props.id))}
+      aria-labelledby={`item-${props.id}-title`} // Associates the title with the parent div for screen readers
+    >
       <div className="col-span-9 space-y-3">
         <div className="px-2 space-y-1">
-          <h1 className="text-2xl">{props.title}</h1>
-          <p className="text-sm text-gray-600">{props.description}</p>
+          <h1 id={`item-${props.id}-title`} className="text-2xl">
+            {t(props.title)}
+          </h1>
+          <p className="text-sm text-gray-600">{t(props.description)}</p>
           <Rating
             readonly
             initialValue={props.rating}
@@ -82,14 +88,18 @@ export default function MenuItem(props: MenuItemProps) {
             fillColor="#16a34a"
             rtl={i18n.language === 'ar'}
             allowFraction
+            aria-label="Item Rating" // Accessible label for the rating component
           />
-          <p>{t('currency')} {props.price}</p>
+          <p>
+            {t('currency')} {props.price}
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <Button
             variant={"ghost"}
             size={"icon"}
             onClick={decrement}
+            aria-label="Decrease quantity" // Provides a clear label for screen readers
             className="active:scale-105"
           >
             <CircleMinus color="#16a34a" />
@@ -103,6 +113,7 @@ export default function MenuItem(props: MenuItemProps) {
                 : ""
             }`}
             key={props.quantity}
+            aria-live="polite" // Announces changes to quantity for screen readers
           >
             {quantity}
           </span>
@@ -110,25 +121,31 @@ export default function MenuItem(props: MenuItemProps) {
             variant={"ghost"}
             size={"icon"}
             onClick={increment}
+            aria-label="Increase quantity" // Provides a clear label for screen readers
             className="active:scale-105"
           >
             <CirclePlus color="#16a34a" />
           </Button>
-          <Link to={`/item/${props.id}`}>
+          <Link to={`/item/${props.id}`} aria-label={`View details for ${props.title}`}>
             <Button size={"sm"}>{t('menuItem.view')}</Button>
           </Link>
           <Button
             variant={"ghost"}
             size={"icon"}
             onClick={handleFavoritesClick}
+            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"} // Dynamic label based on favorite status
           >
             <Star stroke="#16a34a" fill={isFavorite ? "#16a34a" : "white"} />
           </Button>
         </div>
       </div>
       <div className="place-content-center col-span-3">
-        <img src={props.image} alt={`Photo of ${props.title}`} className="size-32" />
+        <img
+          src={props.image}
+          alt={`Photo of ${props.title}`} // Clear alt text for the image
+          className="size-32"
+        />
       </div>
     </div>
-  );
+  );  
 }
