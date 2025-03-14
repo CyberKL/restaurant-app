@@ -211,7 +211,7 @@ export default function Register() {
       </div>
 
       {/* Background Image Section */}
-      <div className={`relative sm:flex items-center justify-center sm:col-span-6 col-span-full h-screen bg-[url(@/assets/register.jpg)] bg-cover ${i18n.language === 'ar' ? 'rounded-r-3xl' : 'rounded-l-3xl'} hidden px-10`}>
+      <div className={`relative sm:flex items-center justify-center sm:col-span-6 col-span-full h-screen bg-[url(/assets/register.jpg)] bg-cover ${i18n.language === 'ar' ? 'rounded-r-3xl' : 'rounded-l-3xl'} hidden px-10`}>
         {/* Overlay */}
         <div className={`absolute inset-0 bg-black opacity-70 ${i18n.language === 'ar' ? 'rounded-r-3xl' : 'rounded-l-3xl'}`}></div>
 

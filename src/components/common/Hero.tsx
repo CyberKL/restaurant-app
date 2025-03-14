@@ -4,7 +4,7 @@ export default function Hero() {
   const [t] = useTranslation();
 
   return (
-    <div className="relative flex items-center justify-center bg-[url(@/assets/hero.jpg)] h-screen bg-cover snap-start">
+    <div className="relative flex items-center justify-center bg-[url(/assets/hero.jpg)] h-screen bg-cover snap-start">
       {/* Overlay */}
       <div className="absolute inset-0 bg-black opacity-70" aria-hidden="true"></div> {/* aria-hidden for the overlay */}
 
